@@ -166,7 +166,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>HIDRO JABON</string>
+            <string>Hidro Jabón</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -217,7 +217,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>HIDRO CERA</string>
+            <string>Hidro Cera</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -233,7 +233,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>DESENGRASANTE</string>
+            <string>Desengrasante</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
