@@ -185,7 +185,7 @@
             <enum>QFrame::Shadow::Sunken</enum>
            </property>
            <property name="text">
-            <string>HIDRO AGUA</string>
+            <string>Hidro Agua</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
