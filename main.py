@@ -12,7 +12,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         super().__init__() #llama al constructor de la clase QMainWindow, para inicializar las funcionalidades básicas de la ventana principal de la app.
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
-
+        print("Probando...")
         self.tiempo_credito = 270
         self.creditos_boxes = [0, 0, 0, 0, 0]
         self.tiempo_boxes = [0, 0, 0, 0, 0]
