@@ -50,6 +50,11 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         mensaje = "PRUEBAAA\n"  # El \n ayuda a delimitar el mensaje
         self.arduino.write(mensaje.encode())  # Envía como bytes
 
+    def seleccionarBox(self, item):
+        print(item.text())
+        indice = self.ui.listaBoxes.row(item)
+        print(indice)
+
     def separar_num(self, tiempo):
         if ":" in tiempo:
             self.min = ""

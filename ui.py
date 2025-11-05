@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfazOiKuQk.ui'
+## Form generated from reading UI file 'interfazrqvswd.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -46,26 +46,26 @@ class Ui_MainWindow(object):
         self.groupFree.setObjectName(u"groupFree")
         self.vboxFree = QVBoxLayout(self.groupFree)
         self.vboxFree.setObjectName(u"vboxFree")
-        self.listFree = QListWidget(self.groupFree)
+        self.listaBoxes = QListWidget(self.groupFree)
         font1 = QFont()
         font1.setBold(True)
-        __qlistwidgetitem = QListWidgetItem(self.listFree)
+        __qlistwidgetitem = QListWidgetItem(self.listaBoxes)
         __qlistwidgetitem.setFont(font1);
-        __qlistwidgetitem1 = QListWidgetItem(self.listFree)
+        __qlistwidgetitem1 = QListWidgetItem(self.listaBoxes)
         __qlistwidgetitem1.setFont(font1);
-        __qlistwidgetitem2 = QListWidgetItem(self.listFree)
+        __qlistwidgetitem2 = QListWidgetItem(self.listaBoxes)
         __qlistwidgetitem2.setFont(font1);
-        __qlistwidgetitem3 = QListWidgetItem(self.listFree)
+        __qlistwidgetitem3 = QListWidgetItem(self.listaBoxes)
         __qlistwidgetitem3.setFont(font1);
         font2 = QFont()
         font2.setBold(True)
         font2.setUnderline(False)
         font2.setStrikeOut(False)
-        __qlistwidgetitem4 = QListWidgetItem(self.listFree)
+        __qlistwidgetitem4 = QListWidgetItem(self.listaBoxes)
         __qlistwidgetitem4.setFont(font2);
-        self.listFree.setObjectName(u"listFree")
+        self.listaBoxes.setObjectName(u"listaBoxes")
 
-        self.vboxFree.addWidget(self.listFree)
+        self.vboxFree.addWidget(self.listaBoxes)
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
@@ -212,6 +212,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.pushIniciar.clicked.connect(MainWindow.creditos)
+        self.listaBoxes.itemClicked.connect(MainWindow.seleccionarBox)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -221,19 +222,19 @@ class Ui_MainWindow(object):
         self.labelTitle.setText(QCoreApplication.translate("MainWindow", u"AquaManager - Panel de Control", None))
         self.groupFree.setTitle(QCoreApplication.translate("MainWindow", u"Boxes:", None))
 
-        __sortingEnabled = self.listFree.isSortingEnabled()
-        self.listFree.setSortingEnabled(False)
-        ___qlistwidgetitem = self.listFree.item(0)
+        __sortingEnabled = self.listaBoxes.isSortingEnabled()
+        self.listaBoxes.setSortingEnabled(False)
+        ___qlistwidgetitem = self.listaBoxes.item(0)
         ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"Box1", None));
-        ___qlistwidgetitem1 = self.listFree.item(1)
+        ___qlistwidgetitem1 = self.listaBoxes.item(1)
         ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Box2", None));
-        ___qlistwidgetitem2 = self.listFree.item(2)
+        ___qlistwidgetitem2 = self.listaBoxes.item(2)
         ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Box3", None));
-        ___qlistwidgetitem3 = self.listFree.item(3)
+        ___qlistwidgetitem3 = self.listaBoxes.item(3)
         ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Box4", None));
-        ___qlistwidgetitem4 = self.listFree.item(4)
+        ___qlistwidgetitem4 = self.listaBoxes.item(4)
         ___qlistwidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Box5", None));
-        self.listFree.setSortingEnabled(__sortingEnabled)
+        self.listaBoxes.setSortingEnabled(__sortingEnabled)
 
         self.labelSelect.setText(QCoreApplication.translate("MainWindow", u"Box seleccionada:", None))
         self.labelCredits.setText(QCoreApplication.translate("MainWindow", u"Cr\u00e9ditos:", None))
