@@ -15,12 +15,18 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
         self.tiempo_credito = 270
         self.tiempo = 0
+        self.tupla_tiempo = (0, 0)
         self.creditos_boxes = [0, 0, 0, 0, 0]
         self.tiempo_boxes = [0, 0, 0, 0, 0]
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
         self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
         # self.ui.agua.setStyleSheet("background-color: red;") # cambiar color de fondo de label
+        
+        # revisar a que puerto esta conectado el arduino
+        puertos = serial.tools.list_ports.comports()
+        for p in puertos:
+            print(p.device, p.description)
 
         self.arduino = serial.Serial('COM3', 9600)
         time.sleep(2)  # Espera a que se estabilice la conexión
@@ -32,9 +38,11 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
     def creditos(self):
         print("Creditos ingresados:",self.ui.spinCreditos.value())
+        creditos_cargados = "C" + str(self.ui.spinCreditos.value())
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
         self.tiempo_boxes[self.actualBox] = self.creditos_boxes[self.actualBox] * self.tiempo_credito
         print(self.creditos_boxes, self.tiempo_boxes)
+        self.arduino.write(creditos_cargados.encode())
 
     def cambioBox(self, index):
         self.actualBox = index
@@ -59,11 +67,35 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.sec += i
             return int(self.min), int(self.sec)
     
+    def imprimir_tiempo(self):
+        min = str(self.tupla_tiempo[0])
+        sec = str(self.tupla_tiempo[1])
+        if self.tupla_tiempo[1] < 10:
+            sec = "0" + sec
+        self.ui.lcdTime.display(f"{min}:{sec}")
+
+    def barra_porcentaje(self):
+        tiempo_total = self.tiempo_boxes[self.actualBox]
+
+        if tiempo_total == 0:
+            self.ui.progressTime.setValue(0)
+            return
+
+        # tiempo restante -> calcular cuánto se consumió
+        tiempo_consumido = tiempo_total - (self.tupla_tiempo[0] * 60 + self.tupla_tiempo[1])
+        porcentaje = int((tiempo_consumido / tiempo_total) * 100)
+
+        # límites para evitar números fuera de rango
+        porcentaje = max(0, min(100, porcentaje))
+
+        self.ui.progressTime.setValue(porcentaje)
+    
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
             self.tiempo = self.arduino.readline().decode().strip() 
-            print(self.separar_num(self.tiempo))
-            self.ui.lcdTime.display(self.tiempo)
+            self.tupla_tiempo = self.separar_num(self.tiempo)
+            self.imprimir_tiempo()
+            self.barra_porcentaje()
 
 if __name__ == "__main__": #checkea si el script está siendo ejecutado como el prog principal (no importado como un modulo).
     app = QApplication(sys.argv)    # Crea un Qt widget, la cual va ser nuestra ventana.
