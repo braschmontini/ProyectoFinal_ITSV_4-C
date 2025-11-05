@@ -63,14 +63,11 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         try:
             if self.arduino.in_waiting > 0:
 
-                # Leer línea segura
                 data = self.arduino.readline().decode("utf-8", errors="ignore").strip()
 
-                # Si está vacía → no seguimos
                 if not data:
                     return
 
-                # Si el dato no tiene el formato MM:SS → ignorarlo
                 if ":" not in data:
                     print("Dato ignorado:", data)
                     return
@@ -80,22 +77,20 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     return
 
                 min, sec = tupla
-                self.tiempo = min * 60 + sec  # SE GUARDA EL TIEMPO EN SEGUNDOS
+                self.tiempo = min * 60 + sec  # Guardamos tiempo en segundos
 
-                self.imprimir_tiempo()
+                self.imprimir_tiempo(min, sec)
                 self.actualizar_barra()
 
         except Exception as e:
-            print("⚠️ Error en leer_serial:", e)
+            print("⚠️ Error en leer_serial:", repr(e))
 
 
-    def imprimir_tiempo(self):
-        min = str(self.tupla_tiempo[0])
-        sec = str(self.tupla_tiempo[1])
-        if self.tupla_tiempo[1] < 10:
-            sec = "0" + sec
+
+    def imprimir_tiempo(self, min, sec):
+        sec = f"{sec:02d}"
         self.ui.lcdTime.display(f"{min}:{sec}")
-        
+
 
     def barra_porcentaje(self, tiempo):
         tiempo_total = self.tiempo_boxes[self.actualBox]
@@ -112,6 +107,22 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         porcentaje = max(0, min(100, porcentaje))
 
         self.ui.progressTime.setValue(porcentaje)
+
+    def actualizar_barra(self):
+        
+        tiempo_total = self.tiempo_boxes[self.actualBox]
+
+        if tiempo_total == 0:
+            self.ui.progressBar.setValue(0)
+            return
+
+        # tiempo restante llega desde Arduino, por lo que calculamos consumido:
+        tiempo_consumido = tiempo_total - self.tiempo
+        porcentaje = int((tiempo_consumido / tiempo_total) * 100)
+
+        porcentaje = max(0, min(100, porcentaje))
+        self.ui.progressBar.setValue(porcentaje)
+
 
 if __name__ == "__main__": #checkea si el script está siendo ejecutado como el prog principal (no importado como un modulo).
     app = QApplication(sys.argv)    # Crea un Qt widget, la cual va ser nuestra ventana.
