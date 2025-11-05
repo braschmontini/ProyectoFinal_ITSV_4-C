@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'pryectoQjkMto.ui'
+## Form generated from reading UI file 'interfazOiKuQk.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(866, 472)
+        MainWindow.resize(878, 472)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -47,6 +47,22 @@ class Ui_MainWindow(object):
         self.vboxFree = QVBoxLayout(self.groupFree)
         self.vboxFree.setObjectName(u"vboxFree")
         self.listFree = QListWidget(self.groupFree)
+        font1 = QFont()
+        font1.setBold(True)
+        __qlistwidgetitem = QListWidgetItem(self.listFree)
+        __qlistwidgetitem.setFont(font1);
+        __qlistwidgetitem1 = QListWidgetItem(self.listFree)
+        __qlistwidgetitem1.setFont(font1);
+        __qlistwidgetitem2 = QListWidgetItem(self.listFree)
+        __qlistwidgetitem2.setFont(font1);
+        __qlistwidgetitem3 = QListWidgetItem(self.listFree)
+        __qlistwidgetitem3.setFont(font1);
+        font2 = QFont()
+        font2.setBold(True)
+        font2.setUnderline(False)
+        font2.setStrikeOut(False)
+        __qlistwidgetitem4 = QListWidgetItem(self.listFree)
+        __qlistwidgetitem4.setFont(font2);
         self.listFree.setObjectName(u"listFree")
 
         self.vboxFree.addWidget(self.listFree)
@@ -98,8 +114,8 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.hLayoutCabinas)
 
-        self.hLayoutTimerOptions = QHBoxLayout()
-        self.hLayoutTimerOptions.setObjectName(u"hLayoutTimerOptions")
+        self.GrupoopcionesBox = QHBoxLayout()
+        self.GrupoopcionesBox.setObjectName(u"GrupoopcionesBox")
         self.groupTimer = QGroupBox(self.centralwidget)
         self.groupTimer.setObjectName(u"groupTimer")
         self.vboxTimer = QVBoxLayout(self.groupTimer)
@@ -121,7 +137,7 @@ class Ui_MainWindow(object):
         self.vboxTimer.addWidget(self.progressTime)
 
 
-        self.hLayoutTimerOptions.addWidget(self.groupTimer)
+        self.GrupoopcionesBox.addWidget(self.groupTimer)
 
         self.groupWashOptions = QGroupBox(self.centralwidget)
         self.groupWashOptions.setObjectName(u"groupWashOptions")
@@ -169,7 +185,7 @@ class Ui_MainWindow(object):
         self.gridWash.addWidget(self.desengrasante, 3, 0, 1, 2)
 
 
-        self.hLayoutTimerOptions.addWidget(self.groupWashOptions)
+        self.GrupoopcionesBox.addWidget(self.groupWashOptions)
 
         self.groupQR = QGroupBox(self.centralwidget)
         self.groupQR.setObjectName(u"groupQR")
@@ -182,10 +198,10 @@ class Ui_MainWindow(object):
         self.vboxQR.addWidget(self.labelQR)
 
 
-        self.hLayoutTimerOptions.addWidget(self.groupQR)
+        self.GrupoopcionesBox.addWidget(self.groupQR)
 
 
-        self.verticalLayout.addLayout(self.hLayoutTimerOptions)
+        self.verticalLayout.addLayout(self.GrupoopcionesBox)
 
         self.statusbar = QStatusBar(self.centralwidget)
         self.statusbar.setObjectName(u"statusbar")
@@ -204,16 +220,31 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"AquaManager", None))
         self.labelTitle.setText(QCoreApplication.translate("MainWindow", u"AquaManager - Panel de Control", None))
         self.groupFree.setTitle(QCoreApplication.translate("MainWindow", u"Boxes:", None))
+
+        __sortingEnabled = self.listFree.isSortingEnabled()
+        self.listFree.setSortingEnabled(False)
+        ___qlistwidgetitem = self.listFree.item(0)
+        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"Box1", None));
+        ___qlistwidgetitem1 = self.listFree.item(1)
+        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Box2", None));
+        ___qlistwidgetitem2 = self.listFree.item(2)
+        ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Box3", None));
+        ___qlistwidgetitem3 = self.listFree.item(3)
+        ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Box4", None));
+        ___qlistwidgetitem4 = self.listFree.item(4)
+        ___qlistwidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Box5", None));
+        self.listFree.setSortingEnabled(__sortingEnabled)
+
         self.labelSelect.setText(QCoreApplication.translate("MainWindow", u"Box seleccionada:", None))
         self.labelCredits.setText(QCoreApplication.translate("MainWindow", u"Cr\u00e9ditos:", None))
         self.pushIniciar.setText(QCoreApplication.translate("MainWindow", u"Asignar cr\u00e9ditos", None))
         self.groupTimer.setTitle(QCoreApplication.translate("MainWindow", u"Tiempo restante", None))
         self.groupWashOptions.setTitle(QCoreApplication.translate("MainWindow", u"Opcion de lavado seleccionado", None))
-        self.jabon.setText(QCoreApplication.translate("MainWindow", u"HIDRO JABON", None))
-        self.agua.setText(QCoreApplication.translate("MainWindow", u"HIDRO AGUA", None))
+        self.jabon.setText(QCoreApplication.translate("MainWindow", u"Hidro Jab\u00f3n", None))
+        self.agua.setText(QCoreApplication.translate("MainWindow", u"Hidro Agua", None))
         self.foam.setText(QCoreApplication.translate("MainWindow", u"FOAM", None))
-        self.cera.setText(QCoreApplication.translate("MainWindow", u"HIDRO CERA", None))
-        self.desengrasante.setText(QCoreApplication.translate("MainWindow", u"DESENGRASANTE", None))
+        self.cera.setText(QCoreApplication.translate("MainWindow", u"Hidro Cera", None))
+        self.desengrasante.setText(QCoreApplication.translate("MainWindow", u"Desengrasante", None))
         self.groupQR.setTitle(QCoreApplication.translate("MainWindow", u"QR de pago", None))
         self.labelQR.setText(QCoreApplication.translate("MainWindow", u"[QR - vinculado a cuenta]", None))
     # retranslateUi
