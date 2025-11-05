@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         for p in puertos:
             print(p.device, p.description)
 
-        self.arduino = serial.Serial('COM3', 9600)
+        self.arduino = serial.Serial('COM4', 9600)
         time.sleep(2)  # Espera a que se estabilice la conexión
 
         # Temporizador para leer datos cada 200 ms
@@ -49,6 +49,11 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         print(self.actualBox)
         mensaje = "PRUEBAAA\n"  # El \n ayuda a delimitar el mensaje
         self.arduino.write(mensaje.encode())  # Envía como bytes
+
+    def seleccionarBox(self, item):
+        print(item.text())
+        indice = self.ui.listaBoxes.row(item)
+        print(indice)
 
     def separar_num(self, tiempo):
         if ":" in tiempo:

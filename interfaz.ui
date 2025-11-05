@@ -40,7 +40,7 @@
         </property>
         <layout class="QVBoxLayout" name="vboxFree">
          <item>
-          <widget class="QListWidget" name="listFree">
+          <widget class="QListWidget" name="listaBoxes">
            <item>
             <property name="text">
              <string>Box1</string>
@@ -332,8 +332,8 @@
    <slot>creditos()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>803</x>
-     <y>278</y>
+     <x>856</x>
+     <y>313</y>
     </hint>
     <hint type="destinationlabel">
      <x>432</x>
@@ -341,8 +341,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>listaBoxes</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>seleccionarBox()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>416</x>
+     <y>602</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>creditos()</slot>
+  <slot>seleccionarBox()</slot>
  </slots>
 </ui>
