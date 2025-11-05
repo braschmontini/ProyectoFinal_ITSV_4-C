@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>866</width>
+    <width>878</width>
     <height>472</height>
    </rect>
   </property>
@@ -40,7 +40,60 @@
         </property>
         <layout class="QVBoxLayout" name="vboxFree">
          <item>
-          <widget class="QListWidget" name="listFree"/>
+          <widget class="QListWidget" name="listFree">
+           <item>
+            <property name="text">
+             <string>Box1</string>
+            </property>
+            <property name="font">
+             <font>
+              <bold>true</bold>
+             </font>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Box2</string>
+            </property>
+            <property name="font">
+             <font>
+              <bold>true</bold>
+             </font>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Box3</string>
+            </property>
+            <property name="font">
+             <font>
+              <bold>true</bold>
+             </font>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Box4</string>
+            </property>
+            <property name="font">
+             <font>
+              <bold>true</bold>
+             </font>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Box5</string>
+            </property>
+            <property name="font">
+             <font>
+              <bold>true</bold>
+              <underline>false</underline>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+           </item>
+          </widget>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout">
@@ -115,7 +168,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="hLayoutTimerOptions">
+     <layout class="QHBoxLayout" name="GrupoopcionesBox">
       <item>
        <widget class="QGroupBox" name="groupTimer">
         <property name="title">
@@ -166,7 +219,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>HIDRO JABON</string>
+            <string>Hidro Jabón</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -185,7 +238,7 @@
             <enum>QFrame::Shadow::Sunken</enum>
            </property>
            <property name="text">
-            <string>HIDRO AGUA</string>
+            <string>Hidro Agua</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -217,7 +270,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>HIDRO CERA</string>
+            <string>Hidro Cera</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -233,7 +286,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>DESENGRASANTE</string>
+            <string>Desengrasante</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
