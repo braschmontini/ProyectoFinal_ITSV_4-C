@@ -15,12 +15,16 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
         self.tiempo_credito = 270
         self.tiempo = 0
+        self.tupla_tiempo = (0, 0)
         self.creditos_boxes = [0, 0, 0, 0, 0]
         self.tiempo_boxes = [0, 0, 0, 0, 0]
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
         self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
         # self.ui.agua.setStyleSheet("background-color: red;") # cambiar color de fondo de label
+        puertos = serial.tools.list_ports.comports()
+        for p in puertos:
+            print(p.device, p.description)
 
         self.arduino = serial.Serial('COM4', 9600)
         time.sleep(2)  # Espera a que se estabilice la conexión
@@ -32,9 +36,11 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
     def creditos(self):
         print("Creditos ingresados:",self.ui.spinCreditos.value())
+        creditos_cargados = self.ui.spinCreditos.value()
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
         self.tiempo_boxes[self.actualBox] = self.creditos_boxes[self.actualBox] * self.tiempo_credito
         print(self.creditos_boxes, self.tiempo_boxes)
+        self.arduino.write(creditos_cargados.encode())
 
     def cambioBox(self, index):
         self.actualBox = index
@@ -59,11 +65,18 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.sec += i
             return int(self.min), int(self.sec)
     
+    def imprimir_tiempo(self):
+        min = str(self.tupla_tiempo[0])
+        sec = str(self.tupla_tiempo[1])
+        if self.tupla_tiempo[1] < 10:
+            sec = "0" + sec
+        self.ui.lcdTime.display(f"{min}:{sec}")
+
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
             self.tiempo = self.arduino.readline().decode().strip() 
-            print(self.separar_num(self.tiempo))
-            self.ui.lcdTime.display(self.tiempo)
+            self.tupla_tiempo = self.separar_num(self.tiempo)
+            self.imprimir_tiempo()
 
 if __name__ == "__main__": #checkea si el script está siendo ejecutado como el prog principal (no importado como un modulo).
     app = QApplication(sys.argv)    # Crea un Qt widget, la cual va ser nuestra ventana.
