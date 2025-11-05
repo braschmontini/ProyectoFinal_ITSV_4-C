@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
         # self.ui.agua.setStyleSheet("background-color: red;") # cambiar color de fondo de label
-        
+
         # revisar a que puerto esta conectado el arduino
         puertos = serial.tools.list_ports.comports()
         for p in puertos:
@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.sec += i
             return int(self.min), int(self.sec)
     
-    def imprimir_tiempo(self):
+    def imprimir_tiempo(self, tiempo):
         min = str(self.tupla_tiempo[0])
         sec = str(self.tupla_tiempo[1])
         if self.tupla_tiempo[1] < 10:
@@ -92,10 +92,41 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
     
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
-            self.tiempo = self.arduino.readline().decode().strip() 
-            self.tupla_tiempo = self.separar_num(self.tiempo)
-            self.imprimir_tiempo()
-            self.barra_porcentaje()
+            self.mensaje = self.arduino.readline().decode().strip() 
+            if ":" in self.mensaje:
+                self.tupla_tiempo = self.separar_num(self.mensaje)
+                self.imprimir_tiempo(self.mensaje)
+                self.barra_porcentaje()
+            elif self.mensaje == "A":
+                self.ui.agua.setStyleSheet("background-color: lightgreen;") # <--
+                self.ui.jabon.setStyleSheet("background-color: white;")
+                self.ui.foam.setStyleSheet("background-color: white;")
+                self.ui.desengrasante.setStyleSheet("background-color: white;")
+                self.ui.cera.setStyleSheet("background-color: white;")
+            elif self.mensaje == "J":
+                self.ui.agua.setStyleSheet("background-color: white;")
+                self.ui.jabon.setStyleSheet("background-color: lightgreen;") # <--
+                self.ui.foam.setStyleSheet("background-color: white;")
+                self.ui.desengrasante.setStyleSheet("background-color: white;")
+                self.ui.cera.setStyleSheet("background-color: white;")
+            elif self.mensaje == "D":
+                self.ui.agua.setStyleSheet("background-color: white;")
+                self.ui.jabon.setStyleSheet("background-color: white;") 
+                self.ui.foam.setStyleSheet("background-color: white;")
+                self.ui.desengrasante.setStyleSheet("background-color: lightgreen;") # <--
+                self.ui.cera.setStyleSheet("background-color: white;")
+            elif self.mensaje == "F":
+                self.ui.agua.setStyleSheet("background-color: white;")
+                self.ui.jabon.setStyleSheet("background-color: white;") 
+                self.ui.foam.setStyleSheet("background-color: lightgreen;") # <--
+                self.ui.desengrasante.setStyleSheet("background-color: white;")
+                self.ui.cera.setStyleSheet("background-color: white;")
+            elif self.mensaje == "C":
+                self.ui.agua.setStyleSheet("background-color: white;")
+                self.ui.jabon.setStyleSheet("background-color: white;") 
+                self.ui.foam.setStyleSheet("background-color: white;")
+                self.ui.desengrasante.setStyleSheet("background-color: white;")
+                self.ui.cera.setStyleSheet("background-color: lightgreen;") # <--
 
 if __name__ == "__main__": #checkea si el script está siendo ejecutado como el prog principal (no importado como un modulo).
     app = QApplication(sys.argv)    # Crea un Qt widget, la cual va ser nuestra ventana.
