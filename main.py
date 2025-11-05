@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
         # self.ui.agua.setStyleSheet("background-color: red;") # cambiar color de fondo de label
 
-        self.arduino = serial.Serial('COM4', 9600)
+        self.arduino = serial.Serial('COM3', 9600)
         time.sleep(2)  # Espera a que se estabilice la conexión
 
         # Temporizador para leer datos cada 200 ms
