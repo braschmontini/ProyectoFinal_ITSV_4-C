@@ -14,6 +14,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         print("Probando...")
 
         self.tiempo_credito = 270
+        self.tiempo = 0
         self.creditos_boxes = [0, 0, 0, 0, 0]
         self.tiempo_boxes = [0, 0, 0, 0, 0]
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
@@ -41,11 +42,28 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         mensaje = "PRUEBAAA\n"  # El \n ayuda a delimitar el mensaje
         self.arduino.write(mensaje.encode())  # Envía como bytes
 
+    def separar_num(self, tiempo):
+        if ":" in tiempo:
+            self.min = ""
+            for i in tiempo:
+                if i == ":":
+                    break
+                self.min += i
+            self.sec = ""
+            self.in_sec = False
+            for i in tiempo:
+                if i == ":":
+                    self.in_sec = True
+                    continue
+                if self.in_sec == True:
+                    self.sec += i
+            return int(self.min), int(self.sec)
     
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
-            dato = self.arduino.readline().decode().strip() 
-            print(dato)
+            self.tiempo = self.arduino.readline().decode().strip() 
+            print(self.separar_num(self.tiempo))
+            self.ui.lcdTime.display(self.tiempo)
 
 if __name__ == "__main__": #checkea si el script está siendo ejecutado como el prog principal (no importado como un modulo).
     app = QApplication(sys.argv)    # Crea un Qt widget, la cual va ser nuestra ventana.
