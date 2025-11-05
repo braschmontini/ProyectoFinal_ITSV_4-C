@@ -1,18 +1,18 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
+import serial.tools.list_ports
+import time
+import serial
 
-"""
-from Archivo convertido con pyside2-uic archivo.ui > interfaz.py
-import nombre de la clase del archivo convertido
-"""
 from ui import Ui_MainWindow
 class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que es una clase de PyQt para crear la ventana principal de la app.
     def __init__(self): #constructor method. Se ejuecuta cuando la instancia de la clase es creada.
         super().__init__() #llama al constructor de la clase QMainWindow, para inicializar las funcionalidades básicas de la ventana principal de la app.
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
-        print("Probando...") # holaaaaaaaaaaaaaaaaaaaaaaaaaa
+        print("Probando...")
+
         self.tiempo_credito = 270
         self.creditos_boxes = [0, 0, 0, 0, 0]
         self.tiempo_boxes = [0, 0, 0, 0, 0]
@@ -21,6 +21,13 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
         # self.ui.agua.setStyleSheet("background-color: red;") # cambiar color de fondo de label
 
+        self.arduino = serial.Serial('COM4', 9600)
+        time.sleep(2)  # Espera a que se estabilice la conexión
+
+        # Temporizador para leer datos cada 200 ms
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.leer_serial)
+        self.timer.start(10)
 
     def creditos(self):
         print("Creditos ingresados:",self.ui.spinCreditos.value())
@@ -31,6 +38,14 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
     def cambioBox(self, index):
         self.actualBox = index
         print(self.actualBox)
+        mensaje = "PRUEBAAA\n"  # El \n ayuda a delimitar el mensaje
+        self.arduino.write(mensaje.encode())  # Envía como bytes
+
+    
+    def leer_serial(self):
+        if self.arduino.in_waiting > 0:
+            dato = self.arduino.readline().decode().strip()
+            print(dato)
 
 if __name__ == "__main__": #checkea si el script está siendo ejecutado como el prog principal (no importado como un modulo).
     app = QApplication(sys.argv)    # Crea un Qt widget, la cual va ser nuestra ventana.
