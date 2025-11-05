@@ -22,6 +22,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
         # self.ui.agua.setStyleSheet("background-color: red;") # cambiar color de fondo de label
+        # revisar a que puerto esta conectado el arduino
         puertos = serial.tools.list_ports.comports()
         for p in puertos:
             print(p.device, p.description)
@@ -36,7 +37,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
     def creditos(self):
         print("Creditos ingresados:",self.ui.spinCreditos.value())
-        creditos_cargados = self.ui.spinCreditos.value()
+        creditos_cargados = "C" + str(self.ui.spinCreditos.value())
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
         self.tiempo_boxes[self.actualBox] = self.creditos_boxes[self.actualBox] * self.tiempo_credito
         print(self.creditos_boxes, self.tiempo_boxes)
