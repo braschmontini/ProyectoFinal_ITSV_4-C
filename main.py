@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
     
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
-            dato = self.arduino.readline().decode().strip()
+            dato = self.arduino.readline().decode().strip() 
             print(dato)
 
 if __name__ == "__main__": #checkea si el script está siendo ejecutado como el prog principal (no importado como un modulo).
