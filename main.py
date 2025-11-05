@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
         # self.ui.agua.setStyleSheet("background-color: red;") # cambiar color de fondo de label
 
-        self.arduino = serial.Serial('COM4', 9600)
+        self.arduino = serial.Serial('COM1', 9600)
         time.sleep(2)  # Espera a que se estabilice la conexión
 
         # Temporizador para leer datos cada 200 ms
@@ -62,8 +62,20 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
             self.tiempo = self.arduino.readline().decode().strip() 
-            print(self.separar_num(self.tiempo))
             self.ui.lcdTime.display(self.tiempo)
+
+            # Actualiza la barra:
+            self.barra_porcentaje(self.tiempo)
+
+    def barra_porcentaje(self, tiempo):
+        min, sec = self.separar_num(tiempo)
+        tiempo_actual = min * 60 + sec
+
+        tiempo_total = self.tiempo_boxes[self.actualBox]  # total en segundos
+
+        if tiempo_total > 0:
+            porcentaje = int((tiempo_actual / tiempo_total) * 100)
+            self.ui.progressBar.setValue(porcentaje)
 
 if __name__ == "__main__": #checkea si el script está siendo ejecutado como el prog principal (no importado como un modulo).
     app = QApplication(sys.argv)    # Crea un Qt widget, la cual va ser nuestra ventana.
