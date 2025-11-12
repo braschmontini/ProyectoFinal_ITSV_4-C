@@ -63,7 +63,9 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
         # Temporizador para leer datos cada 200 ms
         self.timer = QTimer()
+        self.comprobarFinalizacion = QTimer()
         self.timer.timeout.connect(self.leer_serial)
+        self.comprobarFinalizacion.timeout.connect(self.ajustarTiempoCero)
         self.timer.start(10)
 
     def creditos(self):
@@ -97,12 +99,19 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.sec += i
             return int(self.min), int(self.sec)
     
-    def imprimir_tiempo(self, tiempo):
+    def imprimir_tiempo(self):
         min = str(self.tupla_tiempo[0])
         sec = str(self.tupla_tiempo[1])
         if self.tupla_tiempo[1] < 10:
             sec = "0" + sec
         self.ui.lcdTime.display(f"{min}:{sec}")
+    
+    def ajustarTiempoCero(self):
+        self.tupla_tiempo = (0, 0)
+        self.imprimir_tiempo()
+        self.ui.progressTime.setValue(100)
+        self.ui.pushIniciar.setEnabled(True)
+
 
     def barra_porcentaje(self):
         tiempo_total = self.tiempo_boxes[self.actualBox]
@@ -124,9 +133,12 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         if self.arduino.in_waiting > 0:
             self.mensaje = self.arduino.readline().decode().strip() 
             if ":" in self.mensaje:
+                self.ui.pushIniciar.setEnabled(False)
                 self.tupla_tiempo = self.separar_num(self.mensaje)
-                self.imprimir_tiempo(self.mensaje)
+                self.imprimir_tiempo()
                 self.barra_porcentaje()
+                if self.tupla_tiempo[1] == 1 and self.tupla_tiempo[0] == 0:
+                    self.comprobarFinalizacion.start(1000)
             elif self.mensaje == "A":
                 self.ui.agua.setStyleSheet("background-color: lightgreen;") # <--
                 self.ui.jabon.setStyleSheet("background-color: white;")
