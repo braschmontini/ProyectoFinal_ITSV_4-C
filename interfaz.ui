@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>878</width>
+    <width>866</width>
     <height>472</height>
    </rect>
   </property>
@@ -40,60 +40,7 @@
         </property>
         <layout class="QVBoxLayout" name="vboxFree">
          <item>
-          <widget class="QListWidget" name="listaBoxes">
-           <item>
-            <property name="text">
-             <string>Box1</string>
-            </property>
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Box2</string>
-            </property>
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Box3</string>
-            </property>
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Box4</string>
-            </property>
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Box5</string>
-            </property>
-            <property name="font">
-             <font>
-              <bold>true</bold>
-              <underline>false</underline>
-              <strikeout>false</strikeout>
-             </font>
-            </property>
-           </item>
-          </widget>
+          <widget class="QListWidget" name="listFree"/>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout">
@@ -168,7 +115,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="GrupoopcionesBox">
+     <layout class="QHBoxLayout" name="hLayoutTimerOptions">
       <item>
        <widget class="QGroupBox" name="groupTimer">
         <property name="title">
@@ -219,7 +166,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>Hidro Jabón</string>
+            <string>HIDRO JABON</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -238,7 +185,7 @@
             <enum>QFrame::Shadow::Sunken</enum>
            </property>
            <property name="text">
-            <string>Hidro Agua</string>
+            <string>HIDRO AGUA</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -270,7 +217,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>Hidro Cera</string>
+            <string>HIDRO CERA</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -286,7 +233,7 @@
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
            <property name="text">
-            <string>Desengrasante</string>
+            <string>DESENGRASANTE</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -332,8 +279,8 @@
    <slot>creditos()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>856</x>
-     <y>313</y>
+     <x>803</x>
+     <y>278</y>
     </hint>
     <hint type="destinationlabel">
      <x>432</x>
@@ -341,25 +288,8 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>listaBoxes</sender>
-   <signal>itemClicked(QListWidgetItem*)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>seleccionarBox()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>49</x>
-     <y>139</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>416</x>
-     <y>602</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <slot>creditos()</slot>
-  <slot>seleccionarBox()</slot>
  </slots>
 </ui>
