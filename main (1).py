@@ -14,6 +14,10 @@ class LoginWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_LoginWindow()
         self.ui.setupUi(self)
+        self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
+        self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
+        self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
+
 
 
     def open_main_window(self):
