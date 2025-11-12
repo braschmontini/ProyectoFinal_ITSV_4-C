@@ -107,10 +107,8 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.lcdTime.display(f"{min}:{sec}")
     
     def ajustarTiempoCero(self):
-        self.tupla_tiempo = (0, 0)
-        self.imprimir_tiempo()
-        self.ui.progressTime.setValue(100)
         self.ui.pushIniciar.setEnabled(True)
+        self.comprobarFinalizacion.stop()
 
 
     def barra_porcentaje(self):
