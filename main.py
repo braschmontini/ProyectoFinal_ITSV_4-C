@@ -43,8 +43,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
 
-        self.tiempo_credito = 1000
-        self.tiempo = 0
+        self.tiempo_credito = 270
         self.tupla_tiempo = (0, 0)
 
         self.creditos_boxes = []
@@ -61,6 +60,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
         self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
+        self.ui.listFree.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
 
         self.arduino = None
@@ -171,6 +171,17 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             self.imprimir_producto()
             self.imprimir_tiempo()
             self.barra_porcentaje()
+
+            # definir estado de cada box
+            for i in range(5):
+                self.estado_boxes[i] = 0
+            if "off" in self.mensaje:
+                self.estado_boxes[int(self.mensaje[0])] = 2
+            if "on" in self.mensaje:
+                self.estado_boxes[int(self.mensaje[0])] = 1
+
+
+
 
             if self.tiempo_boxes[self.actualBox] == (0, 0):
                 self.ui.pushIniciar.setEnabled(True)

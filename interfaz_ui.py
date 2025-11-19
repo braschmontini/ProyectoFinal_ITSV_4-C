@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfaz.ui'
+## Form generated from reading UI file 'interfazACNJry.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -46,10 +46,13 @@ class Ui_MainWindow(object):
         self.groupFree.setObjectName(u"groupFree")
         self.vboxFree = QVBoxLayout(self.groupFree)
         self.vboxFree.setObjectName(u"vboxFree")
-        self.listFree = QListWidget(self.groupFree)
-        self.listFree.setObjectName(u"listFree")
+        self.listBox = QListWidget(self.groupFree)
+        self.listBox.setObjectName(u"listBox")
+        font1 = QFont()
+        font1.setPointSize(20)
+        self.listBox.setFont(font1)
 
-        self.vboxFree.addWidget(self.listFree)
+        self.vboxFree.addWidget(self.listBox)
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
@@ -102,6 +105,7 @@ class Ui_MainWindow(object):
         self.hLayoutTimerOptions.setObjectName(u"hLayoutTimerOptions")
         self.groupTimer = QGroupBox(self.centralwidget)
         self.groupTimer.setObjectName(u"groupTimer")
+        self.groupTimer.setEnabled(True)
         self.vboxTimer = QVBoxLayout(self.groupTimer)
         self.vboxTimer.setObjectName(u"vboxTimer")
         self.lcdTime = QLCDNumber(self.groupTimer)
