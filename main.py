@@ -8,6 +8,14 @@ from PySide6 import QtUiTools, QtCore
 from login_ui import Ui_LoginWindow 
 from ui import Ui_MainWindow
 
+#Recuperacion de contraseña y usuario
+import random
+import time
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+from email.utils import formataddr
+
 # ------------------ LOGIN WINDOW ------------------
 class LoginWindow(QMainWindow):
     def __init__(self):
@@ -77,6 +85,15 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.timer.timeout.connect(self.leer_serial)
         # self.comprobarFinalizacion.timeout.connect(self.ajustarTiempoCero)
         self.timer.start(10)
+
+        #recuperacion usuario y contraseña
+        self.destinatario = ""
+        self.codigo = []
+        self.smtp_server = "smtp.gmail.com"
+        self.port = 587
+        self.sender_email = "tu_email_de_envio@gmail.com"
+
+
 
     def creditos(self):
         print("Creditos ingresados:",self.ui.spinCreditos.value())
@@ -187,6 +204,53 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                 self.ui.foam.setStyleSheet("background-color: white;")
                 self.ui.desengrasante.setStyleSheet("background-color: white;")
                 self.ui.cera.setStyleSheet("background-color: lightgreen;") # <--
+
+
+
+#Recuperar contraseña y usuario
+
+    def generar_codigo_recuperacion(self):
+     # Genera un número aleatorio entre 10000 y 99999
+        self.codigo = random.randint(10000, 99999)
+        return str(self.codigo)
+    
+    def enviar_codigo_por_email(self):
+        # --- Configuración del Servidor SMTP (Ejemplo usando Gmail con App Password) ---
+    
+    
+        # Prepara el mensaje
+        asunto = "Código de Recuperación de Cuenta"
+        cuerpo = f"""
+        Hola,
+
+        Tu código de recuperación es: **{self.codigo}**
+
+        Ingresa este código de 5 dígitos en la aplicación para ver tus credenciales. 
+        Este código es válido por un tiempo limitado.
+
+        Atentamente,
+        El Equipo de Soporte
+        """
+
+        msg = MIMEText(cuerpo, 'plain', 'utf-8')
+        msg['Subject'] = Header(asunto, 'utf-8')
+        # Para mostrar un nombre legible en el remitente
+        msg['From'] = formataddr((str(Header('Mi Aplicación Qt', 'utf-8')), self.sender_email))
+        msg['To'] = self.destinatario
+    
+        try:
+            with smtplib.SMTP(self.smtp_server, self.port) as server:
+                server.starttls() # Inicia el cifrado TLS
+                server.login(self.sender_email, self.password)
+                server.sendmail(self.sender_email, self.destinatario, msg.as_string())
+            return True
+        except Exception as e:
+            print(f"Error al enviar el correo. Revisa tu configuración SMTP: {e}")
+            return False
+    
+
+    
+
 
 
 # ------------------ MAIN PROGRAM ------------------
