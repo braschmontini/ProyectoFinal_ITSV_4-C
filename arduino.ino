@@ -9,23 +9,17 @@ bool iniciado = 0;
 unsigned long currentmillis = 0;
 unsigned long previousmillis = 0;
 int tiempo = 30;
-int cuentaregresiva = 0; //int cuentaregresiva2 = 0;
+int cuentaregresiva = 0;
 long lastDebounceTime = 0;  // the last time the output pin was toggled
 long debounceDelay = 150;   // the debounce time; increase if the output flickers
-int lastSeconds = -1; //----------------------------------------------------------------------------------------------------------------
-
-// service() {
-//   if ((digitalRead(5) == LOW) && (digitalRead(6) == LOW)) {
-//     credito = 2;
-//   }
-// }
+int lastSeconds = -1;
 
 void setup() {
   Serial.begin(9600);
   Wire.begin();
   lcd.begin(16,2);
   lcd.init();
-  // attachInterrupt(digitalPinToInterrupt(3), service, FALLING);
+
   pinMode(2,INPUT); pinMode(3,INPUT); pinMode(4,INPUT);
   pinMode(5,INPUT); pinMode(6,INPUT); pinMode(7,INPUT);
   pinMode(8,OUTPUT); pinMode(9,OUTPUT);pinMode(10,OUTPUT); 
@@ -47,6 +41,13 @@ void loop() {
       int cantidad = mensaje.substring(1).toInt();
       credito = cantidad;
     }
+    if (mensaje.length() > 0 && mensaje.charAt(0) == '?') {
+      Serial.println(String(box) + "off");
+    }
+    if (mensaje.length() > 0 && mensaje.charAt(0) == 'T') {
+      int cantidad = mensaje.substring(1).toInt();
+      tiempo = cantidad;
+    }
   }
 //--------------------------------------------------------
   if (credito != 0 && iniciado == 0){
@@ -66,7 +67,6 @@ void loop() {
       lcd.print(credito);
     }
   while (credito != 0){
-    // lcd.setCursor (12,1);  lcd.print(credito);
     if(digitalRead(3)!=1||digitalRead(4)!=1||digitalRead(5)!=1||digitalRead(6)!=1||digitalRead(7)!=1){
 
       if (credito == 0 && Serial.available()) {
@@ -102,6 +102,15 @@ void loop() {
       }
     }     
     if (boton1==1 || boton2==1 || boton3==1 || boton4==1 || boton5==1){
+      //---------------------------------------------------------------------------
+      if (Serial.available()) {
+        String mensaje = Serial.readStringUntil('\n');
+        mensaje.trim();
+        if (mensaje.length() > 0 && mensaje.charAt(0) == '?') {
+          Serial.println(String(box) + "on");
+        }
+      }
+      //--------------------------------------------------------
       currentmillis = millis();
       if(cuentaregresiva > 0){
         cuentaregresiva = (tiempo*credito) - ((currentmillis-previousmillis)/1000);

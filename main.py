@@ -41,13 +41,13 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         super().__init__() #llama al constructor de la clase QMainWindow, para inicializar las funcionalidades básicas de la ventana principal de la app.
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
-        print("Probando...")
 
-        self.tiempo_credito = 30
+        self.tiempo_credito = 1000
         self.tiempo = 0
         self.tupla_tiempo = (0, 0)
 
         self.creditos_boxes = []
+        self.estado_boxes = [] # 0 es sin conexion, 1 es encendida, 2 es apagada
         self.tiempo_boxes = []
         self.tiempo_total_boxes = []
         self.productos = []
@@ -56,26 +56,37 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             self.tiempo_boxes.append((0,0))
             self.tiempo_total_boxes.append(0)
             self.productos.append("")
+            self.estado_boxes.append(0)
 
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
         self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
         self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
+
+        self.arduino = None
         self.puerto = 'COM3'
+        try:
+            # revisar a que puerto esta conectado el arduino
+            puertos = serial.tools.list_ports.comports()
+            for p in puertos:
+                if "CH340" in p.description:
+                    print(p.device, p.description)
+                    self.puerto = p.device
+            self.arduino = serial.Serial(self.puerto, 9600)
 
-        # revisar a que puerto esta conectado el arduino
-        puertos = serial.tools.list_ports.comports()
-        for p in puertos:
-            if "CH340" in p.description:
-                print(p.device, p.description)
-                self.puerto = p.device
-
-
-        self.arduino = serial.Serial(self.puerto, 9600)
-        time.sleep(2)  # Espera a que se estabilice la conexión
+            time.sleep(5)  # Espera a que se estabilice la conexión
+            tiempo_por_cred = f"T{self.tiempo_credito}\n"
+            self.arduino.write(tiempo_por_cred.encode())
+            print(tiempo_por_cred)
+        except:
+            print("ERROR: puerto al arduino no localizado. Por favor verifique la conexion.")
 
         self.timer = QTimer()
+        self.estado = QTimer()
         self.timer.timeout.connect(self.leer_serial)
-        self.timer.start(10)
+        self.estado.timeout.connect(self.actualizar_estados)
+        if self.arduino != None:
+            self.timer.start(10)
+            self.estado.start(100)
 
     def creditos(self):
         print("Creditos ingresados:",self.ui.spinCreditos.value())
@@ -137,10 +148,11 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         if self.arduino.in_waiting > 0:
             self.mensaje = self.arduino.readline().decode().strip()
             box = int(self.mensaje[0]) - 1
-            # print(self.mensaje, self.tiempo_boxes, self.productos, self.creditos_boxes)
+            if self.estado_boxes[box] == 0:
+                self.estado_boxes[box] = 1
+            # print(self.mensaje)
 
             if "T" in self.mensaje:
-                self.ui.pushIniciar.setEnabled(False)
                 self.tupla_tiempo = self.separar_num(self.mensaje)
                 self.tiempo_boxes[box] = self.tupla_tiempo
                     
@@ -161,6 +173,20 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
             if self.tiempo_boxes[self.actualBox] == (0, 0):
                 self.ui.pushIniciar.setEnabled(True)
+                self.ui.groupTimer.hide()
+                self.ui.groupWashOptions.hide()
+                self.ui.groupQR.hide()
+            else:
+                self.ui.pushIniciar.setEnabled(False)
+                self.ui.groupTimer.show()
+                self.ui.groupWashOptions.show()
+                self.ui.groupQR.show()
+
+
+
+
+    def actualizar_estados(self):
+        self.arduino.write(b'?\n')
 
 
 # ------------------ MAIN PROGRAM ------------------
