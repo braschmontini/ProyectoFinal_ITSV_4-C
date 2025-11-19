@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledsjTruY.ui'
+## Form generated from reading UI file 'untitledEUoJkt.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.3
+## Created by: Qt User Interface Compiler version 6.10.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -24,7 +24,7 @@ class Ui_LoginWindow(object):
         if not LoginWindow.objectName():
             LoginWindow.setObjectName(u"LoginWindow")
         LoginWindow.resize(1398, 583)
-        LoginWindow.setStyleSheet(u"background-color: rgb(0, 85, 127);")
+        LoginWindow.setStyleSheet(u"background-color: rgb(1, 3, 20);")
         self.centralwidget = QWidget(LoginWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.layoutWidget = QWidget(self.centralwidget)
@@ -111,7 +111,7 @@ class Ui_LoginWindow(object):
         self.label_5 = QLabel(self.layoutWidget)
         self.label_5.setObjectName(u"label_5")
         self.label_5.setMaximumSize(QSize(16777215, 15))
-        self.label_5.setStyleSheet(u"background-color: rgb(0, 85, 127);")
+        self.label_5.setStyleSheet(u"background-color: rgb(1, 3, 20);")
 
         self.gridLayout_2.addWidget(self.label_5, 1, 0, 1, 1)
 
