@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27 ,16,2); // si no te sale con esta direccion  puedes usar (0x3f,16,2) || (0x27,16,2)  ||(0x20,16,2) 
-int teclado = 0; int credito = 0; int box = 0;
+int teclado = 0; int credito = 0; int box = 1;
 bool boton1 = 0; bool boton2 = 0; bool boton3 = 0;  
 bool boton4 = 0; bool boton5 = 0;
 bool flag = 0;
@@ -118,6 +118,7 @@ void loop() {
         lcd.print(seconds); 
         //--------------------------------------------------------------
         if (seconds != lastSeconds) {
+          Serial.print("T" + String(box));
           Serial.print(minutes);
           Serial.print(":");
           Serial.println(seconds);
@@ -150,7 +151,7 @@ void loop() {
 void jabon_prelavado(){   //Micro Reles 8,9,10,11 y 12 activo por "0".
   lcd.setCursor(0,0);
   lcd.print(" DESENGRASANTE ");
-  Serial.println("D");
+  Serial.println(String(box) + "D");
   digitalWrite(8,LOW);
   digitalWrite(9,HIGH);
   digitalWrite(10,HIGH);
@@ -160,7 +161,7 @@ void jabon_prelavado(){   //Micro Reles 8,9,10,11 y 12 activo por "0".
 void jabon_en_lanza(){
   lcd.setCursor(0,0);
   lcd.print("  HIDRO JABON  ");
-  Serial.println("J");
+  Serial.println(String(box) + "J");
   digitalWrite(9,LOW);
   digitalWrite(8,HIGH);
   digitalWrite(10,HIGH);
@@ -170,7 +171,7 @@ void jabon_en_lanza(){
 void espuma_en_cepillo(){
   lcd.setCursor(0,0);
   lcd.print("      FOAM     ");
-  Serial.println("F");
+  Serial.println(String(box) + "F");
   digitalWrite(10,LOW);
   digitalWrite(8,HIGH);
   digitalWrite(9,HIGH);
@@ -180,7 +181,7 @@ void espuma_en_cepillo(){
 void enjuague_en_lanza(){
   lcd.setCursor(0,0);
   lcd.print("   HIDRO AGUA   ");
-  Serial.println("A");
+  Serial.println(String(box) + "A");
   digitalWrite(11,LOW);
   digitalWrite(8,HIGH);
   digitalWrite(9,HIGH);
@@ -190,7 +191,7 @@ void enjuague_en_lanza(){
 void cera_en_lanza(){
   lcd.setCursor(0,0);
   lcd.print("   HIDRO CERA    ");
-  Serial.println("C");
+  Serial.println(String(box) + "C");
   digitalWrite(12,LOW);
   digitalWrite(8,HIGH);
   digitalWrite(9,HIGH);
