@@ -9,12 +9,16 @@ from login_ui import Ui_LoginWindow
 from ui import Ui_MainWindow
 
 #Recuperacion de contraseña y usuario
+import sys
 import random
-import time
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 from email.utils import formataddr
+
+# Importa los módulos de PyQt5 necesarios para la Interfaz de Usuario
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QDialog
+from PyQt6.QtCore import Qt
 
 # ------------------ LOGIN WINDOW ------------------
 class LoginWindow(QMainWindow):
@@ -36,7 +40,7 @@ class LoginWindow(QMainWindow):
         username = self.ui.lineEdit.text()
         password = self.ui.lineEdit_2.text()
 
-        if username == "" and password == "":
+        if username == "pepito5" and password == "1234":
             self.open_main_window()
         else:
             QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos")
@@ -92,6 +96,8 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.smtp_server = "smtp.gmail.com"
         self.port = 587
         self.sender_email = "tu_email_de_envio@gmail.com"
+        self.usuario = "pepito5"
+        self.contraseña = "1234"
 
 
 
@@ -207,46 +213,147 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
 
 
-#Recuperar contraseña y usuario
+    #Recuperar contraseña y usuario
+    
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("AquaManager Login")
+        self.setGeometry(100, 100, 400, 200)
+        
+        # -----------------------------------------------------------
+        # 🔑 ATRIBUTOS DE CONFIGURACIÓN Y CREDENCIALES (Ajustar Aquí)
+        # -----------------------------------------------------------
+        
+        # Configuración del servidor de correo
+        self.smtp_server = "smtp.gmail.com"  # O el servidor SMTP que uses
+        self.port = 587
+        self.sender_email = "soporte.aquamanager@gmail.com" 
 
-    def generar_codigo_recuperacion(self):
-     # Genera un número aleatorio entre 10000 y 99999
-        self.codigo = random.randint(10000, 99999)
-        return str(self.codigo)
+        self.email_password = "TU_CONTRASEÑA_DE_ENVIO_SMTP" 
+        
+        # Credenciales que se enviarán al usuario (Simulación de la BD)
+        self.usuario = "pepito5"
+        self.contraseña = "1234"    
+        
+        # Variable para el destinatario (se llenará desde la interfaz)
+        self.destinatario = ""
+        self.init_ui()
+
+    def init_ui(self):
+        """Configura la interfaz principal (simulada) y conecta los botones."""
+        layout = QVBoxLayout()
+        
+        # Simulación de campos de login
+        
+        # Botón para activar el diálogo de recuperación
+        self.recover_btn = QPushButton("Olvidé mi usuario/contraseña")
+        self.recover_btn.clicked.connect(self.abrir_dialogo_recuperacion)
+        layout.addWidget(self.recover_btn)
+        
+        self.setLayout(layout)
+
+    # -----------------------------------------------------------
+    # 🖼️ LÓGICA DE LA INTERFAZ QT
+    # -----------------------------------------------------------
+
+    def abrir_dialogo_recuperacion(self):
+        """Abre un diálogo modal para solicitar el email del destinatario."""
+        self.recovery_dialog = QDialog(self)
+        self.recovery_dialog.setWindowTitle("Recuperación de Credenciales")
+        
+        layout = QVBoxLayout(self.recovery_dialog)
+        layout.addWidget(QLabel("Ingresa el correo electrónico asociado a tu cuenta:"))
+        
+        # Campo de entrada para el email
+        self.email_input = QLineEdit()
+        self.email_input.setPlaceholderText("ejemplo@correo.com")
+        layout.addWidget(self.email_input)
+        
+        # Botón de envío
+        self.send_btn = QPushButton("Enviar Credenciales")
+        # Conecta el botón a la función que maneja la lógica
+        self.send_btn.clicked.connect(self.manejar_solicitud_recuperacion)
+        layout.addWidget(self.send_btn)
+        
+        self.recovery_dialog.exec_()
+        
+    def manejar_solicitud_recuperacion(self):
+        """Recupera el email del campo, lo asigna a 'self.destinatario' e inicia el envío."""
+        
+        email_ingresado = self.email_input.text().strip()
+        
+        if not email_ingresado:
+            QMessageBox.warning(self, "Error", "Por favor, ingresa un correo electrónico.")
+            return
+
+        # 1. Asignar el email del input a la variable de la clase
+        self.destinatario = email_ingresado
+        
+        # 2. Iniciar el envío
+        envio_exitoso = self.enviar_codigo_por_email()
+
+        # 3. Mostrar feedback al usuario
+        if envio_exitoso:
+            QMessageBox.information(self, "Éxito", f"Tus credenciales han sido enviadas a {self.destinatario}. Revisa tu bandeja de entrada.")
+            self.recovery_dialog.close()
+        else:
+            QMessageBox.critical(self, "Error de Envío", "No se pudo enviar el correo. Revisa los datos SMTP en el código y tu conexión.")
+        
+    # -----------------------------------------------------------
+    # 📧 LÓGICA DE ENVÍO DE CORREO
+    # -----------------------------------------------------------
     
     def enviar_codigo_por_email(self):
-        # --- Configuración del Servidor SMTP (Ejemplo usando Gmail con App Password) ---
-    
-    
+        """Envía el usuario y contraseña al destinatario."""
+        
         # Prepara el mensaje
-        asunto = "Código de Recuperación de Cuenta"
+        asunto = "Credenciales de Acceso - AquaManager"
         cuerpo = f"""
         Hola,
 
-        Tu código de recuperación es: **{self.codigo}**
-
-        Ingresa este código de 5 dígitos en la aplicación para ver tus credenciales. 
-        Este código es válido por un tiempo limitado.
+        Al parecer olvidaste tu usuario y contraseña de ingreso a AquaManager
+        ¡No te procupes, en este correo te lo facilitaremos!
+        
+        Usuario: {self.usuario}
+        Contraseña: {self.contraseña}
 
         Atentamente,
-        El Equipo de Soporte
+        El Equipo de Soporte de AquaManager
         """
 
         msg = MIMEText(cuerpo, 'plain', 'utf-8')
         msg['Subject'] = Header(asunto, 'utf-8')
-        # Para mostrar un nombre legible en el remitente
-        msg['From'] = formataddr((str(Header('Mi Aplicación Qt', 'utf-8')), self.sender_email))
-        msg['To'] = self.destinatario
+        msg['From'] = formataddr((str(Header('AquaManager Soporte', 'utf-8')), self.sender_email))
+        msg['To'] = self.destinatario # Usa el email que el usuario ingresó
     
         try:
             with smtplib.SMTP(self.smtp_server, self.port) as server:
                 server.starttls() # Inicia el cifrado TLS
-                server.login(self.sender_email, self.password)
+                
+                # AUTENTICACIÓN: Usa la contraseña de la cuenta de envío (SMTP App Password)
+                server.login(self.sender_email, self.email_password) 
+                
                 server.sendmail(self.sender_email, self.destinatario, msg.as_string())
             return True
         except Exception as e:
-            print(f"Error al enviar el correo. Revisa tu configuración SMTP: {e}")
+            # Puedes usar print para debug, pero la QMessageBox en manejar_solicitud_recuperacion es para el usuario
+            print(f"Error SMTP al enviar correo: {e}")
             return False
+
+# -----------------------------------------------------------
+# 🚀 EJECUCIÓN DEL PROGRAMA
+# -----------------------------------------------------------
+
+#if __name__ == '__main__':
+#    # Asegúrate de que las librerías están disponibles.
+#    try:
+#        app = QApplication(sys.argv)
+#        window = LoginApp()
+#        window.show()
+#        sys.exit(app.exec_())
+#    except ImportError as e:
+#        print("Faltan módulos. Asegúrate de instalar PyQt5, y las librerías de Python.")
+#        print(f"Error: {e}")
     
 
     
