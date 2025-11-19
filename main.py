@@ -50,10 +50,12 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.creditos_boxes = []
         self.tiempo_boxes = []
         self.tiempo_total_boxes = []
+        self.productos = []
         for i in range(5):
             self.creditos_boxes.append(0)
             self.tiempo_boxes.append((0,0))
             self.tiempo_total_boxes.append(0)
+            self.productos.append("")
 
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
         self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
@@ -71,18 +73,14 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.arduino = serial.Serial(self.puerto, 9600)
         time.sleep(2)  # Espera a que se estabilice la conexión
 
-        # Temporizador para leer datos cada 200 ms
         self.timer = QTimer()
-        self.comprobarFinalizacion = QTimer()
         self.timer.timeout.connect(self.leer_serial)
-        # self.comprobarFinalizacion.timeout.connect(self.ajustarTiempoCero)
         self.timer.start(10)
 
     def creditos(self):
         print("Creditos ingresados:",self.ui.spinCreditos.value())
         creditos_cargados = "C" + str(self.ui.spinCreditos.value())
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
-        # self.tiempo_boxes[self.actualBox] = self.creditos_boxes[self.actualBox] * self.tiempo_credito
         self.arduino.write(creditos_cargados.encode())
 
     def cambioBox(self, index):
@@ -90,22 +88,10 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         print(self.actualBox)
 
     def separar_num(self, tiempo):
-        if ":" in tiempo:
-            self.min = ""
-            for i in tiempo:
-                if i == ":":
-                    break
-                if tiempo.find(i) > 1:
-                    self.min += i
-            self.sec = ""
-            self.in_sec = False
-            for i in tiempo:
-                if i == ":":
-                    self.in_sec = True
-                    continue
-                if self.in_sec == True:
-                    self.sec += i
-            return int(self.min), int(self.sec)
+        if "T" in tiempo:
+            box_tiempo = tiempo.split("T")
+            min_sec = box_tiempo[1].split(":")
+            return int(min_sec[0]), int(min_sec[1])
     
     def imprimir_tiempo(self):
         min = str(self.tiempo_boxes[self.actualBox][0])
@@ -114,10 +100,23 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             sec = "0" + sec
         self.ui.lcdTime.display(f"{min}:{sec}")
     
-    # def ajustarTiempoCero(self):
-    #     self.ui.pushIniciar.setEnabled(True)
-    #     self.comprobarFinalizacion.stop()
+    def imprimir_producto(self):
+        self.ui.agua.setStyleSheet("background-color: white;")
+        self.ui.jabon.setStyleSheet("background-color: white;")
+        self.ui.foam.setStyleSheet("background-color: white;")
+        self.ui.desengrasante.setStyleSheet("background-color: white;")
+        self.ui.cera.setStyleSheet("background-color: white;")
 
+        if self.productos[self.actualBox] == 'A':
+            self.ui.agua.setStyleSheet("background-color: lightgreen;")
+        elif self.productos[self.actualBox] == 'J':
+            self.ui.jabon.setStyleSheet("background-color: lightgreen;")
+        elif self.productos[self.actualBox] == 'D':
+            self.ui.desengrasante.setStyleSheet("background-color: lightgreen;")
+        elif self.productos[self.actualBox] == 'F':
+            self.ui.foam.setStyleSheet("background-color: lightgreen;")
+        elif self.productos[self.actualBox] == 'C':
+            self.ui.cera.setStyleSheet("background-color: lightgreen;")
 
     def barra_porcentaje(self):
         tiempo_total = self.creditos_boxes[self.actualBox] * self.tiempo_credito
@@ -132,61 +131,36 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
         # límites para evitar números fuera de rango
         porcentaje = max(0, min(100, porcentaje))
-        print(tiempo_total, tiempo_consumido)
         self.ui.progressTime.setValue(porcentaje)
     
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
             self.mensaje = self.arduino.readline().decode().strip()
-            print(self.mensaje, self.tiempo_boxes)
-            # if ":" in self.mensaje:
-            #     self.ui.pushIniciar.setEnabled(False)
-            #     self.tupla_tiempo = self.separar_num(self.mensaje)
-            #     self.imprimir_tiempo()
-            #     self.barra_porcentaje()
-            #     if self.tupla_tiempo[1] == 1 and self.tupla_tiempo[0] == 0:
-            #         self.comprobarFinalizacion.start(1000)
+            box = int(self.mensaje[0]) - 1
+            # print(self.mensaje, self.tiempo_boxes, self.productos, self.creditos_boxes)
+
             if "T" in self.mensaje:
-                indice = self.mensaje.find('T')
-                box = self.mensaje[indice + 1]
                 self.ui.pushIniciar.setEnabled(False)
                 self.tupla_tiempo = self.separar_num(self.mensaje)
-                self.tiempo_boxes[int(box)-1] = self.tupla_tiempo
-                self.imprimir_tiempo()
-                self.barra_porcentaje()
-                if self.tupla_tiempo[1] == 1 and self.tupla_tiempo[0] == 0:
-                    self.comprobarFinalizacion.start(1000)
-     
+                self.tiempo_boxes[box] = self.tupla_tiempo
+                    
             elif "A" in self.mensaje:
-                self.ui.agua.setStyleSheet("background-color: lightgreen;") # <--
-                self.ui.jabon.setStyleSheet("background-color: white;")
-                self.ui.foam.setStyleSheet("background-color: white;")
-                self.ui.desengrasante.setStyleSheet("background-color: white;")
-                self.ui.cera.setStyleSheet("background-color: white;")
+                self.productos[box] = 'A'
             elif "J" in self.mensaje:
-                self.ui.agua.setStyleSheet("background-color: white;")
-                self.ui.jabon.setStyleSheet("background-color: lightgreen;") # <--
-                self.ui.foam.setStyleSheet("background-color: white;")
-                self.ui.desengrasante.setStyleSheet("background-color: white;")
-                self.ui.cera.setStyleSheet("background-color: white;")
+                self.productos[box] = 'J'
             elif "D" in self.mensaje:
-                self.ui.agua.setStyleSheet("background-color: white;")
-                self.ui.jabon.setStyleSheet("background-color: white;") 
-                self.ui.foam.setStyleSheet("background-color: white;")
-                self.ui.desengrasante.setStyleSheet("background-color: lightgreen;") # <--
-                self.ui.cera.setStyleSheet("background-color: white;")
+                self.productos[box] = 'D'
             elif "F" in self.mensaje:
-                self.ui.agua.setStyleSheet("background-color: white;")
-                self.ui.jabon.setStyleSheet("background-color: white;") 
-                self.ui.foam.setStyleSheet("background-color: lightgreen;") # <--
-                self.ui.desengrasante.setStyleSheet("background-color: white;")
-                self.ui.cera.setStyleSheet("background-color: white;")
+                self.productos[box] = 'F'
             elif "C" in self.mensaje:
-                self.ui.agua.setStyleSheet("background-color: white;")
-                self.ui.jabon.setStyleSheet("background-color: white;") 
-                self.ui.foam.setStyleSheet("background-color: white;")
-                self.ui.desengrasante.setStyleSheet("background-color: white;")
-                self.ui.cera.setStyleSheet("background-color: lightgreen;") # <--
+                self.productos[box] = 'C'
+
+            self.imprimir_producto()
+            self.imprimir_tiempo()
+            self.barra_porcentaje()
+
+            if self.tiempo_boxes[self.actualBox] == (0, 0):
+                self.ui.pushIniciar.setEnabled(True)
 
 
 # ------------------ MAIN PROGRAM ------------------

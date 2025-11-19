@@ -118,7 +118,7 @@ void loop() {
         lcd.print(seconds); 
         //--------------------------------------------------------------
         if (seconds != lastSeconds) {
-          Serial.print("T" + String(box));
+          Serial.print(String(box) + "T");
           Serial.print(minutes);
           Serial.print(":");
           Serial.println(seconds);
