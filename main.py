@@ -3,10 +3,12 @@ import time
 import serial
 import serial.tools.list_ports
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtCore import QTimer, Qt
+from PySide6.QtCore import QTimer, Qt, QSize
+from PySide6.QtGui import QMovie
 from PySide6 import QtUiTools, QtCore
-from login_ui import Ui_LoginWindow 
+from untitled_ui import Ui_LoginWindow 
 from ui import Ui_MainWindow
+
 
 # ------------------ LOGIN WINDOW ------------------
 class LoginWindow(QMainWindow):
@@ -18,19 +20,34 @@ class LoginWindow(QMainWindow):
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
-
+        
 
 
     def open_main_window(self):
-        self.main_window = MainWindow()
+        self.main_window = MainWindow(self.arduino, self.puerto)
         self.main_window.show()
         self.close()
+
     def checklogin(self):
         username = self.ui.lineEdit.text()
         password = self.ui.lineEdit_2.text()
 
         if username == "" and password == "":
-            self.open_main_window()
+            gif = QMovie("GIF_Carga.gif")
+            gif.setScaledSize(QSize(85, 85))
+            self.ui.GIFdeCarga.setMovie(gif)
+            gif.start()
+            try:
+                # revisar a que puerto esta conectado el arduino
+                puertos = serial.tools.list_ports.comports()
+                for p in puertos:
+                    if "CH340" in p.description:
+                        print(p.device, p.description)
+                        self.puerto = p.device
+                self.arduino = serial.Serial(self.puerto, 9600)
+            except:
+                print("ERROR: puerto al arduino no localizado. Por favor verifique la conexion.")
+            QtCore.QTimer.singleShot(5000, self.open_main_window)
         else:
             QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos")
 
@@ -38,7 +55,7 @@ class LoginWindow(QMainWindow):
 
 # ------------------ MAIN WINDOW ------------------
 class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que es una clase de PyQt para crear la ventana principal de la app.
-    def __init__(self): #constructor method. Se ejuecuta cuando la instancia de la clase es creada.
+    def __init__(self, arduino = None, puerto = 'COM3'): #constructor method. Se ejuecuta cuando la instancia de la clase es creada.
         super().__init__() #llama al constructor de la clase QMainWindow, para inicializar las funcionalidades básicas de la ventana principal de la app.
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
@@ -63,23 +80,12 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
         self.ui.listBox.addItems(["BOX 1", "BOX 2", "BOX 3", "BOX 4", "BOX 5"])
 
-        self.arduino = None
-        self.puerto = 'COM3'
-        try:
-            # revisar a que puerto esta conectado el arduino
-            puertos = serial.tools.list_ports.comports()
-            for p in puertos:
-                if "CH340" in p.description:
-                    print(p.device, p.description)
-                    self.puerto = p.device
-            self.arduino = serial.Serial(self.puerto, 9600)
+        self.arduino = arduino
+        self.puerto = puerto
 
-            time.sleep(5)  # Espera a que se estabilice la conexión
-            tiempo_por_cred = f"T{self.tiempo_credito}\n"
-            self.arduino.write(tiempo_por_cred.encode())
-            print(tiempo_por_cred)
-        except:
-            print("ERROR: puerto al arduino no localizado. Por favor verifique la conexion.")
+        tiempo_por_cred = f"T{self.tiempo_credito}\n"
+        self.arduino.write(tiempo_por_cred.encode())
+        print(tiempo_por_cred)
 
         self.timer = QTimer()
         self.estado = QTimer()
