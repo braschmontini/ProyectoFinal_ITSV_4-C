@@ -17,6 +17,18 @@ from email.mime.text import MIMEText
 from email.header import Header
 from email.utils import formataddr
 
+#GIF de carga
+import sys
+# --- Importaciones de PySide 6 ---
+from PySide6.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, 
+    QPushButton, QLabel, QGridLayout
+)
+from PySide6.QtGui import QMovie, QPixmap
+from PySide6.QtCore import Qt, QTimer, QSize
+# -----------------------------------
+
+
 
 
 # ------------------ LOGIN WINDOW ------------------
@@ -28,7 +40,33 @@ class LoginWindow(QMainWindow):
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
+        # ... (dentro de la clase MainWindow)
 
+        # 1. Objeto QMovie (Carga y manejo del GIF)
+        GIF_PATH = 'GIF_Carga'
+        self.movie = QMovie(GIF_PATH)
+        
+        # Opcional: Ajustar el tamaño del GIF 
+        self.movie.setScaledSize(QSize(100, 100)) 
+
+        # 2. Etiqueta (QLabel) para el GIF
+        self.loading_label = QLabel()
+        self.loading_label.setAlignment(Qt.AlignmentFlag.AlignCenter) # Nota: En PySide 6 a veces se necesita usar AlignmentFlag
+        self.loading_label.setMovie(self.movie)
+
+        # 3. Pantalla de Carga
+        # Usar WindowType.Popup en PySide 6
+        self.loading_screen = QWidget(self, self.windowFlags() | Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint)
+        # Añadir self.loading_label al layout de self.loading_screen
+        
+        # 4. Temporizador (QTimer)
+        self.timer = QTimer(self)
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(self.stop_loading_screen) 
+        
+        # 5. Conexión del Botón
+        self.login_button = QPushButton("Ingresar")
+        self.login_button.clicked.connect(self.start_loading_screen)
 
 
     def open_main_window(self):
@@ -43,6 +81,42 @@ class LoginWindow(QMainWindow):
             self.open_main_window()
         else:
             QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos")
+    
+    def start_loading_animation(self):
+        """
+        1. Inicia la animación del GIF (el giro).
+        2. Hace visible el contenedor (self.loading_screen).
+           3. Opcional: Deshabilita el botón de inicio.
+     """
+    
+    # 1. Iniciar la animación del GIF
+        self.movie.start() 
+    
+    # 2. Hacer visible el contenedor del Label
+    # Asegúrate que 'self.loading_screen' esté posicionado correctamente (centrado) antes de mostrar
+        self.loading_screen.show() 
+    
+    # 3. Opcional: Deshabilitar el botón que lo activó
+    # (Si el botón se llama self.login_button)
+    # self.login_button.setEnabled(False)
+    
+    # Nota: Si estás usando un QTimer, deberías iniciarlo aquí también:
+    # self.timer.start(5000)
+    
+    def stop_loading_animation(self):
+        """
+        1. Detiene la animación del GIF (el giro).
+        2. Oculta el contenedor (self.loading_screen).
+        """
+    
+        # 1. Detener la animación del GIF
+        self.movie.stop() 
+    
+    # 2. Ocultar el contenedor del Label
+        self.loading_screen.hide()
+    
+    # 3. Opcional: Habilitar el botón
+    # self.login_button.setEnabled(True)
 
 
 class Recuperacion(QMainWindow):
