@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledsjTruY.ui'
+## Form generated from reading UI file 'untitledCSFkBt.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.3
+## Created by: Qt User Interface Compiler version 6.10.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -24,7 +24,7 @@ class Ui_LoginWindow(object):
         if not LoginWindow.objectName():
             LoginWindow.setObjectName(u"LoginWindow")
         LoginWindow.resize(1398, 583)
-        LoginWindow.setStyleSheet(u"background-color: rgb(0, 85, 127);")
+        LoginWindow.setStyleSheet(u"background-color: rgb(1, 3, 20);")
         self.centralwidget = QWidget(LoginWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.layoutWidget = QWidget(self.centralwidget)
@@ -60,23 +60,25 @@ class Ui_LoginWindow(object):
 
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.pushButton = QPushButton(self.layoutWidget)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setMaximumSize(QSize(16777215, 16777215))
+        font = QFont()
+        font.setFamilies([u"Arial"])
+        font.setPointSize(11)
+        font.setBold(True)
+        self.pushButton.setFont(font)
+        self.pushButton.setStyleSheet(u"background-color: rgb(215, 210, 223);")
+
+        self.gridLayout_2.addWidget(self.pushButton, 8, 0, 1, 1)
+
+        self.label_4 = QLabel(self.layoutWidget)
+        self.label_4.setObjectName(u"label_4")
+
+        self.gridLayout_2.addWidget(self.label_4, 7, 0, 1, 1)
+
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label_2 = QLabel(self.layoutWidget)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setMinimumSize(QSize(20, 20))
-        self.label_2.setMaximumSize(QSize(50, 50))
-        self.label_2.setPixmap(QPixmap(u"User.png"))
-        self.label_2.setScaledContents(True)
-
-        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
-
-        self.lineEdit = QLineEdit(self.layoutWidget)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setStyleSheet(u"background-color: rgb(255, 255, 255);")
-
-        self.gridLayout.addWidget(self.lineEdit, 0, 1, 1, 1)
-
         self.label_3 = QLabel(self.layoutWidget)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setMinimumSize(QSize(20, 20))
@@ -94,26 +96,37 @@ class Ui_LoginWindow(object):
 
         self.gridLayout.addWidget(self.lineEdit_2, 1, 1, 1, 1)
 
+        self.label_2 = QLabel(self.layoutWidget)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setMinimumSize(QSize(20, 20))
+        self.label_2.setMaximumSize(QSize(50, 50))
+        self.label_2.setPixmap(QPixmap(u"User.png"))
+        self.label_2.setScaledContents(True)
+
+        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
+
+        self.lineEdit = QLineEdit(self.layoutWidget)
+        self.lineEdit.setObjectName(u"lineEdit")
+        self.lineEdit.setStyleSheet(u"background-color: rgb(255, 255, 255);")
+
+        self.gridLayout.addWidget(self.lineEdit, 0, 1, 1, 1)
+
 
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         self.loginButton = QPushButton(self.layoutWidget)
         self.loginButton.setObjectName(u"loginButton")
-        font = QFont()
-        font.setFamilies([u"Arial"])
-        font.setPointSize(11)
-        font.setBold(True)
         self.loginButton.setFont(font)
         self.loginButton.setStyleSheet(u"background-color: rgb(215, 210, 223);")
 
-        self.gridLayout_2.addWidget(self.loginButton, 2, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.loginButton, 4, 0, 1, 1)
 
         self.label_5 = QLabel(self.layoutWidget)
         self.label_5.setObjectName(u"label_5")
         self.label_5.setMaximumSize(QSize(16777215, 15))
-        self.label_5.setStyleSheet(u"background-color: rgb(0, 85, 127);")
+        self.label_5.setStyleSheet(u"background-color: rgb(1, 3, 20);")
 
-        self.gridLayout_2.addWidget(self.label_5, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_5, 3, 0, 1, 1)
 
 
         self.gridLayout_3.addLayout(self.gridLayout_2, 2, 1, 1, 3)
@@ -126,6 +139,7 @@ class Ui_LoginWindow(object):
 
         self.retranslateUi(LoginWindow)
         self.loginButton.clicked.connect(LoginWindow.checklogin)
+        self.pushButton.clicked.connect(LoginWindow.recuperacion)
 
         QMetaObject.connectSlotsByName(LoginWindow)
     # setupUi
@@ -133,11 +147,12 @@ class Ui_LoginWindow(object):
     def retranslateUi(self, LoginWindow):
         LoginWindow.setWindowTitle(QCoreApplication.translate("LoginWindow", u"MainWindow", None))
         self.label.setText("")
-        self.label_2.setText("")
-        self.lineEdit.setPlaceholderText(QCoreApplication.translate("LoginWindow", u"Usuario", None))
+        self.pushButton.setText(QCoreApplication.translate("LoginWindow", u"Recuperar Contrase\u00f1a", None))
+        self.label_4.setText("")
         self.label_3.setText("")
         self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("LoginWindow", u"Contrase\u00f1a", None))
+        self.label_2.setText("")
+        self.lineEdit.setPlaceholderText(QCoreApplication.translate("LoginWindow", u"Usuario", None))
         self.loginButton.setText(QCoreApplication.translate("LoginWindow", u"INGRESAR", None))
         self.label_5.setText("")
     # retranslateUi
-
