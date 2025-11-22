@@ -30,13 +30,12 @@ from PySide6.QtCore import Qt, QTimer, QSize
 
 
 
-
 # ------------------ LOGIN WINDOW ------------------
 class LoginWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_LoginWindow()
-        self.ui.setupUi(self)
+        self.init_ui(self)
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
@@ -106,10 +105,10 @@ class LoginWindow(QMainWindow):
     def stop_loading_animation(self):
         """
         1. Detiene la animación del GIF (el giro).
-        2. Oculta el contenedor (self.loading_screen).
+            2. Oculta el contenedor (self.loading_screen).
         """
     
-        # 1. Detener la animación del GIF
+    # 1. Detener la animación del GIF
         self.movie.stop() 
     
     # 2. Ocultar el contenedor del Label
