@@ -3,7 +3,7 @@ import time
 import serial
 import serial.tools.list_ports
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Qt
 from PySide6 import QtUiTools, QtCore
 from login_ui import Ui_LoginWindow 
 from ui import Ui_MainWindow
@@ -43,11 +43,12 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
 
-        self.tiempo_credito = 270
+        self.tiempo_credito = 10
         self.tupla_tiempo = (0, 0)
 
         self.creditos_boxes = []
         self.estado_boxes = [] # 0 es sin conexion, 1 es encendida, 2 es apagada
+        self.estados_anteriores = []
         self.tiempo_boxes = []
         self.tiempo_total_boxes = []
         self.productos = []
@@ -57,6 +58,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             self.tiempo_total_boxes.append(0)
             self.productos.append("")
             self.estado_boxes.append(0)
+            self.estados_anteriores.append(0)
 
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
         self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
@@ -84,14 +86,14 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.timer = QTimer()
         self.estado = QTimer()
         self.timer.timeout.connect(self.leer_serial)
-        self.estado.timeout.connect(self.actualizar_estados)
+        self.estado.timeout.connect(self.actualizar_estados) #--------------------------------------------------------------------------------------------------
         if self.arduino != None:
             self.timer.start(10)
             self.estado.start(100)
 
     def creditos(self):
         print("Creditos ingresados:",self.ui.spinCreditos.value())
-        creditos_cargados = "C" + str(self.ui.spinCreditos.value())
+        creditos_cargados = "C" + str(self.ui.spinCreditos.value()) + "\n"
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
         self.arduino.write(creditos_cargados.encode())
 
@@ -144,6 +146,15 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         # límites para evitar números fuera de rango
         porcentaje = max(0, min(100, porcentaje))
         self.ui.progressTime.setValue(porcentaje)
+
+    def actualizar_estados_interfaz(self):
+        for i in range(5):
+            if self.estado_boxes[i] == 0:
+                self.ui.listFree.item(i).setForeground(Qt.GlobalColor.lightGray)
+            elif self.estado_boxes[i] == 2:
+                self.ui.listFree.item(i).setForeground(Qt.GlobalColor.red)
+            elif self.estado_boxes[i] == 1:
+                self.ui.listFree.item(i).setForeground(Qt.GlobalColor.green)
     
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
@@ -151,7 +162,6 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             box = int(self.mensaje[0]) - 1
             if self.estado_boxes[box] == 0:
                 self.estado_boxes[box] = 1
-            # print(self.mensaje)
 
             if "T" in self.mensaje:
                 self.tupla_tiempo = self.separar_num(self.mensaje)
@@ -174,17 +184,24 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
             # definir estado de cada box
             for i in range(5):
-                self.estado_boxes[i] = 0
+                if self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
+                    self.estado_boxes[i] = 0
             if "off" in self.mensaje:
-                self.estado_boxes[int(self.mensaje[0])] = 2
-            if "on" in self.mensaje:
-                self.estado_boxes[int(self.mensaje[0])] = 1
+                self.estado_boxes[int(self.mensaje[0]) - 1] = 2
+            if not self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
+                self.estado_boxes[int(self.mensaje[0]) - 1] = 1
+
+            self.actualizar_estados_interfaz()
 
 
 
-
-            if self.tiempo_boxes[self.actualBox] == (0, 0):
+            if self.tiempo_boxes[self.actualBox] == (0, 0) and self.estado_boxes[self.actualBox] == 2:
                 self.ui.pushIniciar.setEnabled(True)
+                self.ui.groupTimer.hide()
+                self.ui.groupWashOptions.hide()
+                self.ui.groupQR.hide()
+            elif self.estado_boxes[self.actualBox] == 0:
+                self.ui.pushIniciar.setEnabled(False)
                 self.ui.groupTimer.hide()
                 self.ui.groupWashOptions.hide()
                 self.ui.groupQR.hide()
