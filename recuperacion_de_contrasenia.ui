@@ -129,7 +129,8 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(215, 210, 223);</string>
+         <string notr="true">border-color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>ENVIAR E-MAIL</string>

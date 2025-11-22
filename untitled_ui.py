@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledGgijuR.ui'
+## Form generated from reading UI file 'untitledEeQESz.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -23,7 +23,7 @@ class Ui_LoginWindow(object):
     def setupUi(self, LoginWindow):
         if not LoginWindow.objectName():
             LoginWindow.setObjectName(u"LoginWindow")
-        LoginWindow.resize(1398, 579)
+        LoginWindow.resize(1398, 570)
         LoginWindow.setStyleSheet(u"background-color: rgb(1, 3, 20);")
         self.centralwidget = QWidget(LoginWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -54,8 +54,18 @@ class Ui_LoginWindow(object):
         font.setFamilies([u"Arial"])
         font.setPointSize(11)
         font.setBold(True)
+        font.setUnderline(True)
         self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet(u"background-color: rgb(215, 210, 223);")
+        self.pushButton.setStyleSheet(u"background-color: rgb(1, 3, 20);\n"
+"selection-background-color: rgb(1, 3, 20);\n"
+"selection-color: rgb(1, 3, 20);\n"
+"gridline-color: rgb(1, 3, 20);\n"
+"border-left-color: rgb(1, 3, 20);\n"
+"border-bottom-color: rgb(1, 3, 20);\n"
+"border-right-color: rgb(1, 3, 20);\n"
+"border-top-color: rgb(1, 3, 20);\n"
+"border-color: rgb(1, 3, 20);\n"
+"color: rgb(255,255,255);")
 
         self.gridLayout_2.addWidget(self.pushButton, 8, 0, 1, 1)
 
@@ -103,8 +113,13 @@ class Ui_LoginWindow(object):
 
         self.loginButton = QPushButton(self.layoutWidget)
         self.loginButton.setObjectName(u"loginButton")
-        self.loginButton.setFont(font)
-        self.loginButton.setStyleSheet(u"background-color: rgb(215, 210, 223);")
+        font1 = QFont()
+        font1.setFamilies([u"Arial"])
+        font1.setPointSize(11)
+        font1.setBold(True)
+        self.loginButton.setFont(font1)
+        self.loginButton.setStyleSheet(u"border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(255, 255, 255);")
 
         self.gridLayout_2.addWidget(self.loginButton, 4, 0, 1, 1)
 
@@ -152,7 +167,7 @@ class Ui_LoginWindow(object):
 
     def retranslateUi(self, LoginWindow):
         LoginWindow.setWindowTitle(QCoreApplication.translate("LoginWindow", u"MainWindow", None))
-        self.pushButton.setText(QCoreApplication.translate("LoginWindow", u"Recuperar Contrase\u00f1a", None))
+        self.pushButton.setText(QCoreApplication.translate("LoginWindow", u"\u00bfHaz olvidado tu usuario?", None))
         self.label_4.setText("")
         self.label_3.setText("")
         self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("LoginWindow", u"Contrase\u00f1a", None))

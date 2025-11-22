@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'recuperacion_de_contraseniaCFJNWs.ui'
+## Form generated from reading UI file 'recuperacion_de_contraseniaEAEqrx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -71,7 +71,8 @@ class Ui_RecuperarContrasea(object):
         font.setPointSize(11)
         font.setBold(True)
         self.loginButton.setFont(font)
-        self.loginButton.setStyleSheet(u"background-color: rgb(215, 210, 223);")
+        self.loginButton.setStyleSheet(u"border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(255, 255, 255);")
 
         self.gridLayout_2.addWidget(self.loginButton, 3, 0, 1, 1)
 
@@ -144,3 +145,4 @@ class Ui_RecuperarContrasea(object):
         self.lineEdit.setPlaceholderText(QCoreApplication.translate("RecuperarContrasea", u"Ingrese su correo", None))
         self.label_4.setText("")
     # retranslateUi
+
