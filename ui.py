@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'pryectoQjkMto.ui'
+## Form generated from reading UI file 'interfazBlLHRL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -15,11 +15,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QGroupBox, QHBoxLayout, QLCDNumber, QLabel,
-    QListWidget, QListWidgetItem, QMainWindow, QProgressBar,
-    QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
-    QStatusBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QGroupBox,
+    QHBoxLayout, QLCDNumber, QLabel, QListWidget,
+    QListWidgetItem, QMainWindow, QProgressBar, QPushButton,
+    QSizePolicy, QSpacerItem, QSpinBox, QStatusBar,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -46,31 +46,29 @@ class Ui_MainWindow(object):
         self.groupFree.setObjectName(u"groupFree")
         self.vboxFree = QVBoxLayout(self.groupFree)
         self.vboxFree.setObjectName(u"vboxFree")
-        self.listFree = QListWidget(self.groupFree)
-        self.listFree.setObjectName(u"listFree")
+        self.listBox = QListWidget(self.groupFree)
+        self.listBox.setObjectName(u"listBox")
+        font1 = QFont()
+        font1.setPointSize(20)
+        self.listBox.setFont(font1)
 
-        self.vboxFree.addWidget(self.listFree)
+        self.vboxFree.addWidget(self.listBox)
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.labelSelect = QLabel(self.groupFree)
-        self.labelSelect.setObjectName(u"labelSelect")
+        self.pushIniciar = QPushButton(self.groupFree)
+        self.pushIniciar.setObjectName(u"pushIniciar")
 
-        self.gridLayout.addWidget(self.labelSelect, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushIniciar, 0, 7, 1, 1)
 
-        self.comboBox = QComboBox(self.groupFree)
-        self.comboBox.setObjectName(u"comboBox")
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout.addWidget(self.comboBox, 0, 1, 1, 1)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.gridLayout.addItem(self.horizontalSpacer, 0, 2, 1, 1)
+        self.gridLayout.addItem(self.horizontalSpacer_2, 0, 6, 1, 1)
 
         self.labelCredits = QLabel(self.groupFree)
         self.labelCredits.setObjectName(u"labelCredits")
 
-        self.gridLayout.addWidget(self.labelCredits, 0, 3, 1, 1)
+        self.gridLayout.addWidget(self.labelCredits, 0, 4, 1, 1)
 
         self.spinCreditos = QSpinBox(self.groupFree)
         self.spinCreditos.setObjectName(u"spinCreditos")
@@ -78,16 +76,23 @@ class Ui_MainWindow(object):
         self.spinCreditos.setMaximum(60)
         self.spinCreditos.setValue(1)
 
-        self.gridLayout.addWidget(self.spinCreditos, 0, 4, 1, 1)
+        self.gridLayout.addWidget(self.spinCreditos, 0, 5, 1, 1)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout.addItem(self.horizontalSpacer_2, 0, 5, 1, 1)
+        self.gridLayout.addItem(self.horizontalSpacer_3, 0, 1, 1, 1)
 
-        self.pushIniciar = QPushButton(self.groupFree)
-        self.pushIniciar.setObjectName(u"pushIniciar")
+        self.horizontalSpacer = QSpacerItem(80, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout.addWidget(self.pushIniciar, 0, 6, 1, 1)
+        self.gridLayout.addItem(self.horizontalSpacer, 0, 0, 1, 1)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer_4, 0, 2, 1, 1)
+
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer_5, 0, 3, 1, 1)
 
 
         self.vboxFree.addLayout(self.gridLayout)
@@ -102,6 +107,7 @@ class Ui_MainWindow(object):
         self.hLayoutTimerOptions.setObjectName(u"hLayoutTimerOptions")
         self.groupTimer = QGroupBox(self.centralwidget)
         self.groupTimer.setObjectName(u"groupTimer")
+        self.groupTimer.setEnabled(True)
         self.vboxTimer = QVBoxLayout(self.groupTimer)
         self.vboxTimer.setObjectName(u"vboxTimer")
         self.lcdTime = QLCDNumber(self.groupTimer)
@@ -196,6 +202,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.pushIniciar.clicked.connect(MainWindow.creditos)
+        self.listBox.currentRowChanged.connect(MainWindow.cambio_box_lista)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -204,9 +211,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"AquaManager", None))
         self.labelTitle.setText(QCoreApplication.translate("MainWindow", u"AquaManager - Panel de Control", None))
         self.groupFree.setTitle(QCoreApplication.translate("MainWindow", u"Boxes:", None))
-        self.labelSelect.setText(QCoreApplication.translate("MainWindow", u"Box seleccionada:", None))
-        self.labelCredits.setText(QCoreApplication.translate("MainWindow", u"Cr\u00e9ditos:", None))
         self.pushIniciar.setText(QCoreApplication.translate("MainWindow", u"Asignar cr\u00e9ditos", None))
+        self.labelCredits.setText(QCoreApplication.translate("MainWindow", u"Cr\u00e9ditos:", None))
         self.groupTimer.setTitle(QCoreApplication.translate("MainWindow", u"Tiempo restante", None))
         self.groupWashOptions.setTitle(QCoreApplication.translate("MainWindow", u"Opcion de lavado seleccionado", None))
         self.jabon.setText(QCoreApplication.translate("MainWindow", u"HIDRO JABON", None))

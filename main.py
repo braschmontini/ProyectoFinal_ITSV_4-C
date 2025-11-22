@@ -61,9 +61,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             self.estados_anteriores.append(0)
 
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
-        self.ui.comboBox.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
-        self.ui.listFree.addItems(["BOX1", "BOX2", "BOX3", "BOX4", "BOX5"])
-        self.ui.comboBox.currentIndexChanged.connect(self.cambioBox)
+        self.ui.listBox.addItems(["BOX 1", "BOX 2", "BOX 3", "BOX 4", "BOX 5"])
 
         self.arduino = None
         self.puerto = 'COM3'
@@ -92,14 +90,12 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             self.estado.start(100)
 
     def creditos(self):
-        print("Creditos ingresados:",self.ui.spinCreditos.value())
         creditos_cargados = "C" + str(self.ui.spinCreditos.value()) + "\n"
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
         self.arduino.write(creditos_cargados.encode())
-
-    def cambioBox(self, index):
-        self.actualBox = index
-        print(self.actualBox)
+    
+    def cambio_box_lista(self, indice):
+        self.actualBox = indice
 
     def separar_num(self, tiempo):
         if "T" in tiempo:
@@ -150,11 +146,11 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
     def actualizar_estados_interfaz(self):
         for i in range(5):
             if self.estado_boxes[i] == 0:
-                self.ui.listFree.item(i).setForeground(Qt.GlobalColor.lightGray)
+                self.ui.listBox.item(i).setForeground(Qt.GlobalColor.lightGray)
             elif self.estado_boxes[i] == 2:
-                self.ui.listFree.item(i).setForeground(Qt.GlobalColor.red)
+                self.ui.listBox.item(i).setForeground(Qt.GlobalColor.red)
             elif self.estado_boxes[i] == 1:
-                self.ui.listFree.item(i).setForeground(Qt.GlobalColor.green)
+                self.ui.listBox.item(i).setForeground(Qt.GlobalColor.green)
     
     def leer_serial(self):
         if self.arduino.in_waiting > 0:
@@ -192,8 +188,6 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                 self.estado_boxes[int(self.mensaje[0]) - 1] = 1
 
             self.actualizar_estados_interfaz()
-
-
 
             if self.tiempo_boxes[self.actualBox] == (0, 0) and self.estado_boxes[self.actualBox] == 2:
                 self.ui.pushIniciar.setEnabled(True)
