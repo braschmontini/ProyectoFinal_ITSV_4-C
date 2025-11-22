@@ -24,6 +24,16 @@ class LoginWindow(QMainWindow):
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
+        self.hacer_transparente(self.pushButton, "white")
+
+    def hacer_transparente(boton, color_texto="black"):
+        boton.setStyleSheet(
+            f"""
+            background-color: transparent;
+            border: none;
+            color: {color_texto};
+            """
+        )
         
     def recuperacion(self):
         self.recuperar_window = RecuperarWindow(self.usuario[0], self.usuario[1])
