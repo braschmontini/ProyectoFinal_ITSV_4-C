@@ -126,7 +126,7 @@ class Ui_LoginWindow(object):
         self.label.setObjectName(u"label")
         self.label.setMinimumSize(QSize(80, 80))
         self.label.setMaximumSize(QSize(90, 90))
-        self.label.setPixmap(QPixmap(u"User.png"))
+        self.label.setPixmap(QPixmap(u"Icono_sinfondo.png"))
         self.label.setScaledContents(True)
 
         self.gridLayout_3.addWidget(self.label, 0, 2, 2, 1)

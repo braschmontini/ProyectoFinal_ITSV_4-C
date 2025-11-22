@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'recuperacion_de_contraseniabTJHEN.ui'
+## Form generated from reading UI file 'recuperacion_de_contraseniaCFJNWs.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -41,6 +41,7 @@ class Ui_RecuperarContrasea(object):
         self.label.setObjectName(u"label")
         self.label.setMinimumSize(QSize(80, 80))
         self.label.setMaximumSize(QSize(90, 90))
+        self.label.setPixmap(QPixmap(u"Icono_sinfondo.png"))
         self.label.setScaledContents(True)
 
         self.gridLayout_3.addWidget(self.label, 1, 2, 1, 1)
