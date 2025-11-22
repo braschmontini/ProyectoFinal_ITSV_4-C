@@ -7,7 +7,7 @@ from PySide6.QtGui import QMovie
 from PySide6 import QtCore
 from untitled_ui import Ui_LoginWindow 
 from ui import Ui_MainWindow
-from recuperar_mail import recuperar_contrasenia
+from recuperar_mail import RecuperarWindow
 
 
 # ------------------ LOGIN WINDOW ------------------
@@ -19,14 +19,15 @@ class LoginWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_LoginWindow()
         self.ui.setupUi(self)
-        self.showFullScreen()
+        # self.showFullScreen()
+
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
         
     def recuperacion(self):
-        self.recuperar = recuperar_contrasenia(self.usuario[0], self.usuario[1])
-        self.recuperar.main()
+        self.recuperar_window = RecuperarWindow(self.usuario[0], self.usuario[1])
+        self.recuperar_window.show()
 
     def open_main_window(self):
         self.main_window = MainWindow(self.arduino, self.puerto)

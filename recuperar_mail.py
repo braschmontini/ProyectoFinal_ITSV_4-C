@@ -4,8 +4,20 @@ from email.mime.text import MIMEText
 from email.header import Header
 from email.utils import formataddr
 
-class recuperar_contrasenia:
+import sys
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtCore import QTimer, Qt, QSize
+from PySide6.QtGui import QMovie
+from PySide6 import QtCore
+from recuperacion import Ui_RecuperarContrasea
+
+
+class RecuperarWindow(QMainWindow):
     def __init__(self, usuario, contrasenia):
+        super().__init__()
+        self.ui = Ui_RecuperarContrasea()
+        self.ui.setupUi(self)
+
         self.SENDER_EMAIL = "soporte.aquamanager@gmail.com"  # ⬅️ TU EMAIL DE ENVÍO
         self.EMAIL_PASSWORD = "dyph ejym szim eznh" # ⬅️ TU CLAVE DE APLICACIÓN
         self.SMTP_SERVER = "smtp.gmail.com"
@@ -45,13 +57,12 @@ class recuperar_contrasenia:
             print(f"Error SMTP al enviar correo: {e}")
             return False
 
-
     def main(self):
         """Ejecuta el flujo completo de la prueba: solicitar email, enviar, solicitar código y verificar."""
         print("--- 📧 PRUEBA DE ENVÍO Y VERIFICACIÓN SMTP ---")
         
         # 1. Solicitar la dirección de correo
-        destinatario = input("Ingresa la dirección de correo para la prueba: ").strip()
+        destinatario = self.ui.lineEdit.text()
         
         if not destinatario:
             print("Dirección de correo no válida. Terminando programa.")
@@ -63,3 +74,6 @@ class recuperar_contrasenia:
         if not envio_exitoso:
             print("\nPrueba de envío fallida. No se puede continuar.")
             return
+        
+    def enviarmail(self):
+        self.main()
