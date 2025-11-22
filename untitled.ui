@@ -296,6 +296,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>LoginWindow</receiver>
+   <slot>recuperacion()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>745</x>
+     <y>374</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>815</x>
+     <y>528</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>checklogin()</slot>

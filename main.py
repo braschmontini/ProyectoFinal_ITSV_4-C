@@ -1,18 +1,21 @@
 import sys
-import time
 import serial
 import serial.tools.list_ports
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtCore import QTimer, Qt, QSize
 from PySide6.QtGui import QMovie
-from PySide6 import QtUiTools, QtCore
+from PySide6 import QtCore
 from untitled_ui import Ui_LoginWindow 
 from ui import Ui_MainWindow
+from recuperar_mail import recuperar_contrasenia
 
 
 # ------------------ LOGIN WINDOW ------------------
 class LoginWindow(QMainWindow):
     def __init__(self):
+
+        self.usuario = ["pepito5", "1234"]
+
         super().__init__()
         self.ui = Ui_LoginWindow()
         self.ui.setupUi(self)
@@ -21,7 +24,9 @@ class LoginWindow(QMainWindow):
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
         
-
+    def recuperacion(self):
+        self.recuperar = recuperar_contrasenia(self.usuario[0], self.usuario[1])
+        self.recuperar.main()
 
     def open_main_window(self):
         self.main_window = MainWindow(self.arduino, self.puerto)
@@ -32,7 +37,7 @@ class LoginWindow(QMainWindow):
         username = self.ui.lineEdit.text()
         password = self.ui.lineEdit_2.text()
 
-        if username == "" and password == "":
+        if username == self.usuario[0] and password == self.usuario[1]:
             gif = QMovie("GIF_Carga.gif")
             gif.setScaledSize(QSize(85, 85))
             self.ui.GIFdeCarga.setMovie(gif)
@@ -90,7 +95,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.timer = QTimer()
         self.estado = QTimer()
         self.timer.timeout.connect(self.leer_serial)
-        self.estado.timeout.connect(self.actualizar_estados) #--------------------------------------------------------------------------------------------------
+        self.estado.timeout.connect(self.actualizar_estados)
         if self.arduino != None:
             self.timer.start(10)
             self.estado.start(100)

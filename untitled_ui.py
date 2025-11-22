@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledKetMQk.ui'
+## Form generated from reading UI file 'untitledGgijuR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -145,6 +145,7 @@ class Ui_LoginWindow(object):
 
         self.retranslateUi(LoginWindow)
         self.loginButton.clicked.connect(LoginWindow.checklogin)
+        self.pushButton.clicked.connect(LoginWindow.recuperacion)
 
         QMetaObject.connectSlotsByName(LoginWindow)
     # setupUi
