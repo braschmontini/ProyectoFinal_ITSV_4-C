@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'recuperacion_de_contraseniaEAEqrx.ui'
+## Form generated from reading UI file 'recuperacion_de_contraseniaQxJFzE.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -72,7 +72,8 @@ class Ui_RecuperarContrasea(object):
         font.setBold(True)
         self.loginButton.setFont(font)
         self.loginButton.setStyleSheet(u"border-color: rgb(0, 0, 0);\n"
-"background-color: rgb(255, 255, 255);")
+"background-color: rgb(255, 255, 255);\n"
+"color: rgb(0, 0, 0);")
 
         self.gridLayout_2.addWidget(self.loginButton, 3, 0, 1, 1)
 
@@ -99,7 +100,8 @@ class Ui_RecuperarContrasea(object):
 
         self.lineEdit = QLineEdit(self.centralwidget)
         self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setStyleSheet(u"background-color: rgb(255, 255, 255);")
+        self.lineEdit.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+"color: rgb(0, 0, 0);")
 
         self.gridLayout.addWidget(self.lineEdit, 3, 1, 1, 1)
 

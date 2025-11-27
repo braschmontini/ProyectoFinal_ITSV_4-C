@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfazACNJry.ui'
+## Form generated from reading UI file 'interfazlQEGzG.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -134,6 +134,7 @@ class Ui_MainWindow(object):
         self.jabon = QLabel(self.groupWashOptions)
         self.jabon.setObjectName(u"jabon")
         self.jabon.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.jabon.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.jabon.setFrameShape(QFrame.Shape.StyledPanel)
         self.jabon.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -142,6 +143,7 @@ class Ui_MainWindow(object):
         self.agua = QLabel(self.groupWashOptions)
         self.agua.setObjectName(u"agua")
         self.agua.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.agua.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.agua.setFrameShape(QFrame.Shape.StyledPanel)
         self.agua.setFrameShadow(QFrame.Shadow.Sunken)
         self.agua.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -151,6 +153,7 @@ class Ui_MainWindow(object):
         self.foam = QLabel(self.groupWashOptions)
         self.foam.setObjectName(u"foam")
         self.foam.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.foam.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.foam.setFrameShape(QFrame.Shape.StyledPanel)
         self.foam.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -159,6 +162,7 @@ class Ui_MainWindow(object):
         self.cera = QLabel(self.groupWashOptions)
         self.cera.setObjectName(u"cera")
         self.cera.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.cera.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.cera.setFrameShape(QFrame.Shape.StyledPanel)
         self.cera.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -167,6 +171,7 @@ class Ui_MainWindow(object):
         self.desengrasante = QLabel(self.groupWashOptions)
         self.desengrasante.setObjectName(u"desengrasante")
         self.desengrasante.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.desengrasante.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.desengrasante.setFrameShape(QFrame.Shape.StyledPanel)
         self.desengrasante.setAlignment(Qt.AlignmentFlag.AlignCenter)
 

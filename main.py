@@ -136,6 +136,12 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.desengrasante.setStyleSheet("background-color: white;")
         self.ui.cera.setStyleSheet("background-color: white;")
 
+        # self.ui.agua.setStyleSheet("color: black;")
+        # self.ui.jabon.setStyleSheet("color: black;")
+        # self.ui.foam.setStyleSheet("color: black;")
+        # self.ui.desengrasante.setStyleSheet("color: black;")
+        # self.ui.cera.setStyleSheet("color: black;")
+
         if self.productos[self.actualBox] == 'A':
             self.ui.agua.setStyleSheet("background-color: lightgreen;")
         elif self.productos[self.actualBox] == 'J':
