@@ -51,10 +51,16 @@ class LoginWindow(QMainWindow):
                     if "CH340" in p.description:
                         print(p.device, p.description)
                         self.puerto = p.device
+                
                 self.arduino = serial.Serial(self.puerto, 9600)
+                
             except:
                 print("ERROR: puerto al arduino no localizado. Por favor verifique la conexion.")
+                QMessageBox.critical(self, "Error", "Puerto no detectado, conecte el arduino")
+                self.close()
+                sys.exit()
             QtCore.QTimer.singleShot(5000, self.open_main_window)
+            
         else:
             QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos")
 
