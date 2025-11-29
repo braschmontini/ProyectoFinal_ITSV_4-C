@@ -238,12 +238,11 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.ui.pushIniciar.setEnabled(False)
                     self.ui.groupTimer.hide()
                     self.ui.groupWashOptions.hide()
-
+                    
                 else:# Si está activo:
                     self.ui.pushIniciar.setEnabled(False)
                     self.ui.groupTimer.show()
                     self.ui.groupWashOptions.show()
-                    
         except:# Si hubo cualquier error leyendo el puerto serie, se informa la posible pérdida de conexión.
             print("Se ha perdidio la conexion a arduino.")
 
