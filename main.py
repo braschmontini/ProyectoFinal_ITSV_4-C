@@ -14,7 +14,7 @@ from recuperar_mail import RecuperarWindow
 class LoginWindow(QMainWindow):
     def __init__(self):
         
-        self.usuario = ["pepito5", "1234"]
+        self.usuario = ["AquaManager", "1234"]
 
         super().__init__()
         self.ui = Ui_LoginWindow()
