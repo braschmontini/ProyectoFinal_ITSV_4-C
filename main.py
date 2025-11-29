@@ -1,13 +1,23 @@
-import sys
-import serial
-import serial.tools.list_ports
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtCore import QTimer, Qt, QSize
-from PySide6.QtGui import QMovie
-from PySide6 import QtCore
-from untitled_ui import Ui_LoginWindow 
-from ui import Ui_MainWindow
-from recuperar_mail import RecuperarWindow
+import sys #Se usa para cerrar el programa
+import serial #Permite la comunicacion con arduino
+import serial.tools.list_ports #Perte listar los puertos COM disponibles
+
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox #Importa widgets centrales de Qt
+#QApplication: instancia principal que gestiona la aplicación Qt
+#QMainWindow: clase base para ventanas con menús, barras, áreas centrales, etc
+#QMessageBox: ventanas emergentes de advertencia, error, información, etc
+
+from PySide6.QtCore import QTimer, Qt, QSize 
+#QTimer: permite ejecutar funciones de forma periódica (intervalos en ms)
+# Qt: contiene constantes globales (colores, modos, alineaciones, etc.)
+# QSize: se usa para definir tamaños (por ejemplo, para escalar un GIF)
+
+from PySide6.QtGui import QMovie #QMovie: clase para reproducir GIFs animados dentro de un QLabel
+from PySide6 import QtCore #Importa el módulo completo QtCore.
+
+from untitled_ui import Ui_LoginWindow #Importa la clase de Qt Designer para la pantalla de login
+from ui import Ui_MainWindow #Importa la clase   por Qt Designer para la pantalla de la aplicacion
+from recuperar_mail import RecuperarWindow #Importa la clase   por Qt Designer para la pantalla de recuperacion
 
 
 # ------------------ LOGIN WINDOW ------------------
@@ -17,9 +27,8 @@ class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
         self.usuario = ["AquaManager", "1234"]
 
         super().__init__()
-        self.ui = Ui_LoginWindow()
-        self.ui.setupUi(self)
-        # self.showFullScreen()
+        self.ui = Ui_LoginWindow()# Carga la interfaz gráfica generada por Qt Designer para la ventana de login.
+        self.ui.setupUi(self)# Inserta todos los widgets definidos en la interfaz dentro de esta ventana.
 
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
