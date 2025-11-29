@@ -11,7 +11,7 @@ from recuperar_mail import RecuperarWindow
 
 
 # ------------------ LOGIN WINDOW ------------------
-class LoginWindow(QMainWindow):
+class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
     def __init__(self):
         
         self.usuario = ["AquaManager", "1234"]
@@ -25,20 +25,20 @@ class LoginWindow(QMainWindow):
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
 
-    def recuperacion(self):
+    def recuperacion(self): #Ejecuta y abre la ventana de recuperacion de contraseña
         self.recuperar_window = RecuperarWindow(self.usuario[0], self.usuario[1])
         self.recuperar_window.show()
 
-    def open_main_window(self):
+    def open_main_window(self): #Ejecuta y abre la interfaz del proyecto
         self.main_window = MainWindow(self.arduino, self.puerto)
         self.main_window.show()
         self.close()
 
     def checklogin(self):
-        username = self.ui.lineEdit.text()
-        password = self.ui.lineEdit_2.text()
+        username = self.ui.lineEdit.text()   #Comparan los usuarios y contraseñas
+        password = self.ui.lineEdit_2.text() #
 
-        if username == self.usuario[0] and password == self.usuario[1]:
+        if username == self.usuario[0] and password == self.usuario[1]: #Si son correctos inicia el GIF de carga
             gif = QMovie("GIF_Carga.gif")
             gif.setScaledSize(QSize(85, 85))
             self.ui.GIFdeCarga.setMovie(gif)
@@ -54,7 +54,7 @@ class LoginWindow(QMainWindow):
                 
                 self.arduino = serial.Serial(self.puerto, 9600)
                 
-            except:
+            except: #Errores por si no hay nada conectado
                 print("ERROR: puerto al arduino no localizado. Por favor verifique la conexion.")
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
@@ -67,7 +67,7 @@ class LoginWindow(QMainWindow):
                 sys.exit()
                 QtCore.QTimer.singleShot(5000, self.open_main_window)
             
-        else:
+        else: #Alerta si los usuarios y contraseñas son equivocados
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)
             msg.setWindowTitle("Error")
@@ -111,42 +111,42 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         if self.arduino != None:
             self.arduino.write(tiempo_por_cred.encode())
 
-        self.timer = QTimer()
-        self.estado = QTimer()
+        self.timer = QTimer() #Inicia el temporizador
+        self.estado = QTimer() #inicializa la variable 
         self.timer.timeout.connect(self.leer_serial)
         self.estado.timeout.connect(self.actualizar_estados)
-        if self.arduino != None:
+        if self.arduino != None: #Compara si arduino es diferente a None
             self.timer.start(10)
             self.estado.start(100)
 
-    def creditos(self):
+    def creditos(self): #Toma la cant. de creditos dados, lo almacena en una box y envia C5\n por ej
         creditos_cargados = "C" + str(self.ui.spinCreditos.value()) + "\n"
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
         self.arduino.write(creditos_cargados.encode())
     
-    def cambio_box_lista(self, indice):
+    def cambio_box_lista(self, indice): #Cambia el box activo al seleccionado en la lista.
         self.actualBox = indice
 
-    def separar_num(self, tiempo):
+    def separar_num(self, tiempo): #recibe un tiempo, lo separa en seg y min y returna una tupla
         if "T" in tiempo:
-            box_tiempo = tiempo.split("T")
-            min_sec = box_tiempo[1].split(":")
-            return int(min_sec[0]), int(min_sec[1])
+            box_tiempo = tiempo.split("T") #Separa
+            min_sec = box_tiempo[1].split(":") #Separa
+            return int(min_sec[0]), int(min_sec[1]) #Crea tupla
     
-    def imprimir_tiempo(self):
+    def imprimir_tiempo(self): #Toma el tiempo del box actual lo imprime en mm:ss lo muestra en el LCD
         min = str(self.tiempo_boxes[self.actualBox][0])
         sec = str(self.tiempo_boxes[self.actualBox][1])
         if self.tiempo_boxes[self.actualBox][1] < 10:
             sec = "0" + sec
         self.ui.lcdTime.display(f"{min}:{sec}")
     
-    def imprimir_producto(self):
+    def imprimir_producto(self): #Setea los botones a blanco
         self.ui.agua.setStyleSheet("background-color: white;")
         self.ui.jabon.setStyleSheet("background-color: white;")
         self.ui.foam.setStyleSheet("background-color: white;")
         self.ui.desengrasante.setStyleSheet("background-color: white;")
         self.ui.cera.setStyleSheet("background-color: white;")
-
+            #Los pone de color verde si hay cambios
         if self.productos[self.actualBox] == 'A':
             self.ui.agua.setStyleSheet("background-color: lightgreen;")
         elif self.productos[self.actualBox] == 'J':
@@ -158,7 +158,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         elif self.productos[self.actualBox] == 'C':
             self.ui.cera.setStyleSheet("background-color: lightgreen;")
 
-    def barra_porcentaje(self):
+    def barra_porcentaje(self): #Calcula el porcentaje y lo actualiza
         tiempo_total = self.creditos_boxes[self.actualBox] * self.tiempo_credito
 
         if tiempo_total == 0:
@@ -173,7 +173,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         porcentaje = max(0, min(100, porcentaje))
         self.ui.progressTime.setValue(porcentaje)
 
-    def actualizar_estados_interfaz(self):
+    def actualizar_estados_interfaz(self): #Colore los boxes segun estado
         for i in range(5):
             if self.estado_boxes[i] == 0:
                 self.ui.listBox.item(i).setForeground(Qt.GlobalColor.lightGray)
@@ -184,17 +184,17 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
     
     def leer_serial(self):
         try:
-            if self.arduino.in_waiting > 0:
-                self.mensaje = self.arduino.readline().decode().strip()
-                box = int(self.mensaje[0]) - 1
-                if self.estado_boxes[box] == 0:
+            if self.arduino.in_waiting > 0:  # Verifica si hay datos disponibles para leer desde el puerto serie.
+                self.mensaje = self.arduino.readline().decode().strip()  # Lee una línea completa enviada por Arduino, la decodifica y elimina espacios/saltos extra.
+                box = int(self.mensaje[0]) - 1 # El primer carácter del mensaje indica el número de box (1–5). Se convierte a índice (0–4).
+                if self.estado_boxes[box] == 0:  # Si el estado del box está como "sin conexión" (0), pero llegó un mensaje, lo cambia a estado "activo/encendido" (1).
                     self.estado_boxes[box] = 1
 
-                if "T" in self.mensaje:
-                    self.tupla_tiempo = self.separar_num(self.mensaje)
-                    self.tiempo_boxes[box] = self.tupla_tiempo
+                if "T" in self.mensaje:  # Si el mensaje contiene "T", significa que trae tiempo del tipo "T02:30".
+                    self.tupla_tiempo = self.separar_num(self.mensaje) # Convierte el string "Tmm:ss" en una tupla (mm, ss).
+                    self.tiempo_boxes[box] = self.tupla_tiempo # Guarda ese tiempo en la lista de tiempos del box correspondiente.
                         
-                elif "A" in self.mensaje:
+                elif "A" in self.mensaje:# Si contiene "A", "J", "D", "F" o "C", asigna el producto seleccionado para ese box.
                     self.productos[box] = 'A'
                 elif "J" in self.mensaje:
                     self.productos[box] = 'J'
@@ -205,46 +205,54 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                 elif "C" in self.mensaje:
                     self.productos[box] = 'C'
 
+                # Actualiza la interfaz gráfica con el producto, tiempo y barra de progreso.
                 self.imprimir_producto()
                 self.imprimir_tiempo()
                 self.barra_porcentaje()
 
-                # definir estado de cada box
-                for i in range(5):
-                    if self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
+                #---- Definir estado de cada box ----
+
+                for i in range(5):# Recorre los 5 boxes para actualizar su estado según el tiempo recibido.
+                    if self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):# Si el tiempo del box actual es (0,0), se considera que está "sin conexión".
                         self.estado_boxes[i] = 0
-                if "off" in self.mensaje:
+
+                if "off" in self.mensaje:# Si el mensaje contiene la palabra "off", significa que el box terminó y está apagado.
                     self.estado_boxes[int(self.mensaje[0]) - 1] = 2
-                if not self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
+
+                if not self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):# Si el tiempo del box no es cero, lo marca como encendido/activo.
                     self.estado_boxes[int(self.mensaje[0]) - 1] = 1
 
-                self.actualizar_estados_interfaz()
+                self.actualizar_estados_interfaz()# Actualiza los colores y estados mostrados en la interfaz.
 
+
+                 # ----- CONTROL DE VISIBILIDAD Y PERMISOS EN LA INTERFAZ -----
+
+                # Si el tiempo llegó a cero y el estado es "apagado" → habilita botón "Iniciar" y oculta los grupos de opciones.
                 if self.tiempo_boxes[self.actualBox] == (0, 0) and self.estado_boxes[self.actualBox] == 2:
                     self.ui.pushIniciar.setEnabled(True)
                     self.ui.groupTimer.hide()
                     self.ui.groupWashOptions.hide()
 
+                # Si el estado es "sin conexión":
                 elif self.estado_boxes[self.actualBox] == 0:
                     self.ui.pushIniciar.setEnabled(False)
                     self.ui.groupTimer.hide()
                     self.ui.groupWashOptions.hide()
-                else:
+
+                else:# Si está activo:
                     self.ui.pushIniciar.setEnabled(False)
                     self.ui.groupTimer.show()
                     self.ui.groupWashOptions.show()
-        except:
+                    
+        except:# Si hubo cualquier error leyendo el puerto serie, se informa la posible pérdida de conexión.
             print("Se ha perdidio la conexion a arduino.")
 
-
-
-
-    def actualizar_estados(self):
+    def actualizar_estados(self): #Envía el comando "?\n" a Arduino, permite consultar estados cada 100 ms.
         self.arduino.write(b'?\n')
 
 
 # ------------------ MAIN PROGRAM ------------------
-if __name__ == "__main__":
+if __name__ == "__main__": #Crea la aplicacion Qt, muestra el Login y ejecuta el ciclo del programa
     app = QApplication(sys.argv)
     login_window = LoginWindow()
     login_window.show()
