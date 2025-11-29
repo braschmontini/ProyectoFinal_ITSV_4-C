@@ -53,7 +53,8 @@ class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
                         
                 
                 self.arduino = serial.Serial(self.puerto, 9600)
-                
+                QtCore.QTimer.singleShot(5000, self.open_main_window)
+
             except: #Errores por si no hay nada conectado
                 print("ERROR: puerto al arduino no localizado. Por favor verifique la conexion.")
                 msg = QMessageBox()
@@ -61,11 +62,9 @@ class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
                 msg.setWindowTitle("Error")
                 msg.setText("Puerto no detectado, conecte el arduino")
                 msg.setStyleSheet("QMessageBox { background-color: white; }")
-                msg.exec_()
-
-                self.close()
-                sys.exit()
-                QtCore.QTimer.singleShot(5000, self.open_main_window)
+                msg.exec()
+                gif.stop()
+                self.ui.GIFdeCarga.clear()   # borra el contenido sin colapsar el QLabel
             
         else: #Alerta si los usuarios y contraseñas son equivocados
             msg = QMessageBox()
@@ -73,7 +72,7 @@ class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
             msg.setWindowTitle("Error")
             msg.setText("Usuario o contraseña incorrectos")
             msg.setStyleSheet("QMessageBox { background-color: white; }")
-            msg.exec_()
+            msg.exec()
 
 
 
@@ -85,18 +84,15 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
 
         self.tiempo_credito = 10
-        self.tupla_tiempo = (0, 0)
 
         self.creditos_boxes = []
         self.estado_boxes = [] # 0 es sin conexion, 1 es encendida, 2 es apagada
         self.estados_anteriores = []
         self.tiempo_boxes = []
-        self.tiempo_total_boxes = []
         self.productos = []
         for i in range(5):
             self.creditos_boxes.append(0)
             self.tiempo_boxes.append((0,0))
-            self.tiempo_total_boxes.append(0)
             self.productos.append("")
             self.estado_boxes.append(0)
             self.estados_anteriores.append(0)
@@ -191,8 +187,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.estado_boxes[box] = 1
 
                 if "T" in self.mensaje:  # Si el mensaje contiene "T", significa que trae tiempo del tipo "T02:30".
-                    self.tupla_tiempo = self.separar_num(self.mensaje) # Convierte el string "Tmm:ss" en una tupla (mm, ss).
-                    self.tiempo_boxes[box] = self.tupla_tiempo # Guarda ese tiempo en la lista de tiempos del box correspondiente.
+                    self.tiempo_boxes[box] = self.separar_num(self.mensaje) # Convierte el string "Tmm:ss" en una tupla (mm, ss) y lo guarda
                         
                 elif "A" in self.mensaje:# Si contiene "A", "J", "D", "F" o "C", asigna el producto seleccionado para ese box.
                     self.productos[box] = 'A'
