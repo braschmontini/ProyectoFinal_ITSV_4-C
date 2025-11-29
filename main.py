@@ -13,7 +13,7 @@ from recuperar_mail import RecuperarWindow
 # ------------------ LOGIN WINDOW ------------------
 class LoginWindow(QMainWindow):
     def __init__(self):
-
+        
         self.usuario = ["pepito5", "1234"]
 
         super().__init__()
@@ -25,7 +25,6 @@ class LoginWindow(QMainWindow):
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
 
-        
     def recuperacion(self):
         self.recuperar_window = RecuperarWindow(self.usuario[0], self.usuario[1])
         self.recuperar_window.show()
@@ -51,24 +50,36 @@ class LoginWindow(QMainWindow):
                     if "CH340" in p.description:
                         print(p.device, p.description)
                         self.puerto = p.device
+                        
                 
                 self.arduino = serial.Serial(self.puerto, 9600)
                 
             except:
                 print("ERROR: puerto al arduino no localizado. Por favor verifique la conexion.")
-                QMessageBox.critical(self, "Error", "Puerto no detectado, conecte el arduino")
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setWindowTitle("Error")
+                msg.setText("Puerto no detectado, conecte el arduino")
+                msg.setStyleSheet("QMessageBox { background-color: white; }")
+                msg.exec_()
+
                 self.close()
                 sys.exit()
-            QtCore.QTimer.singleShot(5000, self.open_main_window)
+                QtCore.QTimer.singleShot(5000, self.open_main_window)
             
         else:
-            QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos")
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setWindowTitle("Error")
+            msg.setText("Usuario o contraseña incorrectos")
+            msg.setStyleSheet("QMessageBox { background-color: white; }")
+            msg.exec_()
 
 
 
 # ------------------ MAIN WINDOW ------------------
 class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que es una clase de PyQt para crear la ventana principal de la app.
-    def __init__(self, arduino = None, puerto = 'COM3'): #constructor method. Se ejuecuta cuando la instancia de la clase es creada.
+    def __init__(self, arduino = None, puerto = None): #constructor method. Se ejuecuta cuando la instancia de la clase es creada.
         super().__init__() #llama al constructor de la clase QMainWindow, para inicializar las funcionalidades básicas de la ventana principal de la app.
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
@@ -97,8 +108,8 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.puerto = puerto
 
         tiempo_por_cred = f"T{self.tiempo_credito}\n"
-        self.arduino.write(tiempo_por_cred.encode())
-        print(tiempo_por_cred)
+        if self.arduino != None:
+            self.arduino.write(tiempo_por_cred.encode())
 
         self.timer = QTimer()
         self.estado = QTimer()
@@ -136,12 +147,6 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.desengrasante.setStyleSheet("background-color: white;")
         self.ui.cera.setStyleSheet("background-color: white;")
 
-        # self.ui.agua.setStyleSheet("color: black;")
-        # self.ui.jabon.setStyleSheet("color: black;")
-        # self.ui.foam.setStyleSheet("color: black;")
-        # self.ui.desengrasante.setStyleSheet("color: black;")
-        # self.ui.cera.setStyleSheet("color: black;")
-
         if self.productos[self.actualBox] == 'A':
             self.ui.agua.setStyleSheet("background-color: lightgreen;")
         elif self.productos[self.actualBox] == 'J':
@@ -178,57 +183,58 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                 self.ui.listBox.item(i).setForeground(Qt.GlobalColor.green)
     
     def leer_serial(self):
-        if self.arduino.in_waiting > 0:
-            self.mensaje = self.arduino.readline().decode().strip()
-            box = int(self.mensaje[0]) - 1
-            if self.estado_boxes[box] == 0:
-                self.estado_boxes[box] = 1
+        try:
+            if self.arduino.in_waiting > 0:
+                self.mensaje = self.arduino.readline().decode().strip()
+                box = int(self.mensaje[0]) - 1
+                if self.estado_boxes[box] == 0:
+                    self.estado_boxes[box] = 1
 
-            if "T" in self.mensaje:
-                self.tupla_tiempo = self.separar_num(self.mensaje)
-                self.tiempo_boxes[box] = self.tupla_tiempo
-                    
-            elif "A" in self.mensaje:
-                self.productos[box] = 'A'
-            elif "J" in self.mensaje:
-                self.productos[box] = 'J'
-            elif "D" in self.mensaje:
-                self.productos[box] = 'D'
-            elif "F" in self.mensaje:
-                self.productos[box] = 'F'
-            elif "C" in self.mensaje:
-                self.productos[box] = 'C'
+                if "T" in self.mensaje:
+                    self.tupla_tiempo = self.separar_num(self.mensaje)
+                    self.tiempo_boxes[box] = self.tupla_tiempo
+                        
+                elif "A" in self.mensaje:
+                    self.productos[box] = 'A'
+                elif "J" in self.mensaje:
+                    self.productos[box] = 'J'
+                elif "D" in self.mensaje:
+                    self.productos[box] = 'D'
+                elif "F" in self.mensaje:
+                    self.productos[box] = 'F'
+                elif "C" in self.mensaje:
+                    self.productos[box] = 'C'
 
-            self.imprimir_producto()
-            self.imprimir_tiempo()
-            self.barra_porcentaje()
+                self.imprimir_producto()
+                self.imprimir_tiempo()
+                self.barra_porcentaje()
 
-            # definir estado de cada box
-            for i in range(5):
-                if self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
-                    self.estado_boxes[i] = 0
-            if "off" in self.mensaje:
-                self.estado_boxes[int(self.mensaje[0]) - 1] = 2
-            if not self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
-                self.estado_boxes[int(self.mensaje[0]) - 1] = 1
+                # definir estado de cada box
+                for i in range(5):
+                    if self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
+                        self.estado_boxes[i] = 0
+                if "off" in self.mensaje:
+                    self.estado_boxes[int(self.mensaje[0]) - 1] = 2
+                if not self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
+                    self.estado_boxes[int(self.mensaje[0]) - 1] = 1
 
-            self.actualizar_estados_interfaz()
+                self.actualizar_estados_interfaz()
 
-            if self.tiempo_boxes[self.actualBox] == (0, 0) and self.estado_boxes[self.actualBox] == 2:
-                self.ui.pushIniciar.setEnabled(True)
-                self.ui.groupTimer.hide()
-                self.ui.groupWashOptions.hide()
-                self.ui.groupQR.hide()
-            elif self.estado_boxes[self.actualBox] == 0:
-                self.ui.pushIniciar.setEnabled(False)
-                self.ui.groupTimer.hide()
-                self.ui.groupWashOptions.hide()
-                self.ui.groupQR.hide()
-            else:
-                self.ui.pushIniciar.setEnabled(False)
-                self.ui.groupTimer.show()
-                self.ui.groupWashOptions.show()
-                self.ui.groupQR.show()
+                if self.tiempo_boxes[self.actualBox] == (0, 0) and self.estado_boxes[self.actualBox] == 2:
+                    self.ui.pushIniciar.setEnabled(True)
+                    self.ui.groupTimer.hide()
+                    self.ui.groupWashOptions.hide()
+
+                elif self.estado_boxes[self.actualBox] == 0:
+                    self.ui.pushIniciar.setEnabled(False)
+                    self.ui.groupTimer.hide()
+                    self.ui.groupWashOptions.hide()
+                else:
+                    self.ui.pushIniciar.setEnabled(False)
+                    self.ui.groupTimer.show()
+                    self.ui.groupWashOptions.show()
+        except:
+            print("Se ha perdidio la conexion a arduino.")
 
 
 

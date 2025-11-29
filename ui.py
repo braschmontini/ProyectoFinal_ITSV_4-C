@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfazlQEGzG.ui'
+## Form generated from reading UI file 'interfazwjmpyp.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -134,7 +134,6 @@ class Ui_MainWindow(object):
         self.jabon = QLabel(self.groupWashOptions)
         self.jabon.setObjectName(u"jabon")
         self.jabon.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.jabon.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.jabon.setFrameShape(QFrame.Shape.StyledPanel)
         self.jabon.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -143,7 +142,6 @@ class Ui_MainWindow(object):
         self.agua = QLabel(self.groupWashOptions)
         self.agua.setObjectName(u"agua")
         self.agua.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.agua.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.agua.setFrameShape(QFrame.Shape.StyledPanel)
         self.agua.setFrameShadow(QFrame.Shadow.Sunken)
         self.agua.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -153,7 +151,6 @@ class Ui_MainWindow(object):
         self.foam = QLabel(self.groupWashOptions)
         self.foam.setObjectName(u"foam")
         self.foam.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.foam.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.foam.setFrameShape(QFrame.Shape.StyledPanel)
         self.foam.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -162,7 +159,6 @@ class Ui_MainWindow(object):
         self.cera = QLabel(self.groupWashOptions)
         self.cera.setObjectName(u"cera")
         self.cera.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.cera.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.cera.setFrameShape(QFrame.Shape.StyledPanel)
         self.cera.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -171,7 +167,6 @@ class Ui_MainWindow(object):
         self.desengrasante = QLabel(self.groupWashOptions)
         self.desengrasante.setObjectName(u"desengrasante")
         self.desengrasante.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.desengrasante.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.desengrasante.setFrameShape(QFrame.Shape.StyledPanel)
         self.desengrasante.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -179,19 +174,6 @@ class Ui_MainWindow(object):
 
 
         self.hLayoutTimerOptions.addWidget(self.groupWashOptions)
-
-        self.groupQR = QGroupBox(self.centralwidget)
-        self.groupQR.setObjectName(u"groupQR")
-        self.vboxQR = QVBoxLayout(self.groupQR)
-        self.vboxQR.setObjectName(u"vboxQR")
-        self.labelQR = QLabel(self.groupQR)
-        self.labelQR.setObjectName(u"labelQR")
-        self.labelQR.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.vboxQR.addWidget(self.labelQR)
-
-
-        self.hLayoutTimerOptions.addWidget(self.groupQR)
 
 
         self.verticalLayout.addLayout(self.hLayoutTimerOptions)
@@ -223,7 +205,5 @@ class Ui_MainWindow(object):
         self.foam.setText(QCoreApplication.translate("MainWindow", u"FOAM", None))
         self.cera.setText(QCoreApplication.translate("MainWindow", u"HIDRO CERA", None))
         self.desengrasante.setText(QCoreApplication.translate("MainWindow", u"DESENGRASANTE", None))
-        self.groupQR.setTitle(QCoreApplication.translate("MainWindow", u"QR de pago", None))
-        self.labelQR.setText(QCoreApplication.translate("MainWindow", u"[QR - vinculado a cuenta]", None))
     # retranslateUi
 

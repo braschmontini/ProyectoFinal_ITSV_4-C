@@ -252,25 +252,6 @@
         </layout>
        </widget>
       </item>
-      <item>
-       <widget class="QGroupBox" name="groupQR">
-        <property name="title">
-         <string>QR de pago</string>
-        </property>
-        <layout class="QVBoxLayout" name="vboxQR">
-         <item>
-          <widget class="QLabel" name="labelQR">
-           <property name="text">
-            <string>[QR - vinculado a cuenta]</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
      </layout>
     </item>
     <item>
