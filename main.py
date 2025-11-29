@@ -212,18 +212,14 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
                 #---- Definir estado de cada box ----
 
-                for i in range(5):# Recorre los 5 boxes para actualizar su estado según el tiempo recibido.
-                    if self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):# Si el tiempo del box actual es (0,0), se considera que está "sin conexión".
+                for i in range(5):
+                    if self.tiempo_boxes[i] == (0, 0):
                         self.estado_boxes[i] = 0
 
-                if "off" in self.mensaje:# Si el mensaje contiene la palabra "off", significa que el box terminó y está apagado.
-                    self.estado_boxes[int(self.mensaje[0]) - 1] = 2
-
-                if not self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):# Si el tiempo del box no es cero, lo marca como encendido/activo.
-                    self.estado_boxes[int(self.mensaje[0]) - 1] = 1
-
-                self.actualizar_estados_interfaz()# Actualiza los colores y estados mostrados en la interfaz.
-
+                if "off" in self.mensaje:
+                    self.estado_boxes[box] = 2
+                elif self.tiempo_boxes[box] != (0, 0):
+                    self.estado_boxes[box] = 1
 
                  # ----- CONTROL DE VISIBILIDAD Y PERMISOS EN LA INTERFAZ -----
 
