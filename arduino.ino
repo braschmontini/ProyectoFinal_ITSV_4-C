@@ -1,6 +1,6 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x27 ,16,2); // si no te sale con esta direccion  puedes usar (0x3f,16,2) || (0x27,16,2)  ||(0x20,16,2) 
+LiquidCrystal_I2C lcd(0x27 ,16,2);
 int teclado = 0; int credito = 0; int box = 1;
 bool boton1 = 0; bool boton2 = 0; bool boton3 = 0;  
 bool boton4 = 0; bool boton5 = 0;

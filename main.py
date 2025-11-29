@@ -43,6 +43,7 @@ class LoginWindow(QMainWindow):
             gif.setScaledSize(QSize(85, 85))
             self.ui.GIFdeCarga.setMovie(gif)
             gif.start()
+
             try:
                 # revisar a que puerto esta conectado el arduino
                 puertos = serial.tools.list_ports.comports()
@@ -53,7 +54,8 @@ class LoginWindow(QMainWindow):
                         
                 
                 self.arduino = serial.Serial(self.puerto, 9600)
-                
+                QtCore.QTimer.singleShot(5000, self.open_main_window)
+
             except:
                 print("ERROR: puerto al arduino no localizado. Por favor verifique la conexion.")
                 msg = QMessageBox()
@@ -61,19 +63,17 @@ class LoginWindow(QMainWindow):
                 msg.setWindowTitle("Error")
                 msg.setText("Puerto no detectado, conecte el arduino")
                 msg.setStyleSheet("QMessageBox { background-color: white; }")
-                msg.exec_()
+                msg.exec()
+                gif.stop()
+                self.ui.GIFdeCarga.clear()   # borra el contenido sin colapsar el QLabel
 
-                self.close()
-                sys.exit()
-                QtCore.QTimer.singleShot(5000, self.open_main_window)
-            
         else:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)
             msg.setWindowTitle("Error")
             msg.setText("Usuario o contraseña incorrectos")
             msg.setStyleSheet("QMessageBox { background-color: white; }")
-            msg.exec_()
+            msg.exec()
 
 
 
@@ -85,18 +85,16 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
 
         self.tiempo_credito = 10
-        self.tupla_tiempo = (0, 0)
 
         self.creditos_boxes = []
         self.estado_boxes = [] # 0 es sin conexion, 1 es encendida, 2 es apagada
         self.estados_anteriores = []
         self.tiempo_boxes = []
-        self.tiempo_total_boxes = []
         self.productos = []
+
         for i in range(5):
             self.creditos_boxes.append(0)
             self.tiempo_boxes.append((0,0))
-            self.tiempo_total_boxes.append(0)
             self.productos.append("")
             self.estado_boxes.append(0)
             self.estados_anteriores.append(0)
@@ -119,15 +117,15 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             self.timer.start(10)
             self.estado.start(100)
 
-    def creditos(self):
-        creditos_cargados = "C" + str(self.ui.spinCreditos.value()) + "\n"
+    def creditos(self): # guarda y envia los creditos
+        creditos_cargados = "C" + str(self.ui.spinCreditos.value()) + "\n" # guarda los creditos del spin en un modelo de str, entendible por el arduino
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
         self.arduino.write(creditos_cargados.encode())
     
     def cambio_box_lista(self, indice):
         self.actualBox = indice
 
-    def separar_num(self, tiempo):
+    def separar_num(self, tiempo): # recibe un mensaje, si es de tiempo, lo corta con .split() para determinar min. y sec.
         if "T" in tiempo:
             box_tiempo = tiempo.split("T")
             min_sec = box_tiempo[1].split(":")
@@ -140,7 +138,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             sec = "0" + sec
         self.ui.lcdTime.display(f"{min}:{sec}")
     
-    def imprimir_producto(self):
+    def imprimir_producto(self): # establece todos los fondos de los productos a blanco y despues acomoda el producto correspondiente
         self.ui.agua.setStyleSheet("background-color: white;")
         self.ui.jabon.setStyleSheet("background-color: white;")
         self.ui.foam.setStyleSheet("background-color: white;")
@@ -182,7 +180,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             elif self.estado_boxes[i] == 1:
                 self.ui.listBox.item(i).setForeground(Qt.GlobalColor.green)
     
-    def leer_serial(self):
+    def leer_serial(self): # bulce base del programa donde se ralizan las lecturas de todo el arduino
         try:
             if self.arduino.in_waiting > 0:
                 self.mensaje = self.arduino.readline().decode().strip()
@@ -191,8 +189,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.estado_boxes[box] = 1
 
                 if "T" in self.mensaje:
-                    self.tupla_tiempo = self.separar_num(self.mensaje)
-                    self.tiempo_boxes[box] = self.tupla_tiempo
+                    self.tiempo_boxes[box] = self.separar_num(self.mensaje)
                         
                 elif "A" in self.mensaje:
                     self.productos[box] = 'A'
@@ -209,14 +206,17 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                 self.imprimir_tiempo()
                 self.barra_porcentaje()
 
-                # definir estado de cada box
+                # establece los estados de los boxes
                 for i in range(5):
-                    if self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
+                    if self.tiempo_boxes[i] == (0, 0):
                         self.estado_boxes[i] = 0
+
+                box = int(self.mensaje[0]) - 1
+
                 if "off" in self.mensaje:
-                    self.estado_boxes[int(self.mensaje[0]) - 1] = 2
-                if not self.tiempo_boxes[int(self.mensaje[0]) - 1] == (0, 0):
-                    self.estado_boxes[int(self.mensaje[0]) - 1] = 1
+                    self.estado_boxes[box] = 2
+                elif self.tiempo_boxes[box] != (0, 0):
+                    self.estado_boxes[box] = 1
 
                 self.actualizar_estados_interfaz()
 
