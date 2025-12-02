@@ -9,7 +9,6 @@ from untitled_ui import Ui_LoginWindow
 from ui import Ui_MainWindow
 from recuperar_mail import RecuperarWindow
 
-
 # ------------------ LOGIN WINDOW ------------------
 class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
     def __init__(self):
@@ -48,7 +47,6 @@ class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
                 puertos = serial.tools.list_ports.comports()
                 for p in puertos:
                     if "CH340" in p.description:
-                        print(p.device, p.description)
                         self.puerto = p.device
                         
                 
@@ -87,7 +85,6 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
         self.creditos_boxes = []
         self.estado_boxes = [] # 0 es sin conexion, 1 es encendida, 2 es apagada
-        self.estados_anteriores = []
         self.tiempo_boxes = []
         self.productos = []
         for i in range(5):
@@ -95,7 +92,6 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             self.tiempo_boxes.append((0,0))
             self.productos.append("")
             self.estado_boxes.append(0)
-            self.estados_anteriores.append(0)
 
         self.actualBox = 0 # 0 es 1, 1 es 2, etc...
         self.ui.listBox.addItems(["BOX 1", "BOX 2", "BOX 3", "BOX 4", "BOX 5"])
