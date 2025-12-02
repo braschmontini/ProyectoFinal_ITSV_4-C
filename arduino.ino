@@ -21,7 +21,7 @@ void setup() {
   pinMode(3,INPUT); pinMode(4,INPUT);
   pinMode(5,INPUT); pinMode(6,INPUT); pinMode(7,INPUT);
   pinMode(8,OUTPUT); pinMode(9,OUTPUT);pinMode(10,OUTPUT); 
-  pinMode(11,OUTPUT);pinMode(12,OUTPUT);pinMode(13,OUTPUT);
+  pinMode(11,OUTPUT);pinMode(12,OUTPUT);
 }
 void loop() {
   digitalWrite(8,HIGH);
