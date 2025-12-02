@@ -210,10 +210,6 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
                 #---- Definir estado de cada box ----
 
-                for i in range(5):
-                    if self.tiempo_boxes[i] == (0, 0):
-                        self.estado_boxes[i] = 0
-
                 if "off" in self.mensaje:
                     self.estado_boxes[box] = 2
                 elif self.tiempo_boxes[box] != (0, 0):
@@ -240,6 +236,9 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.ui.groupWashOptions.show()
         except:# Si hubo cualquier error leyendo el puerto serie, se informa la posible pérdida de conexión.
             print("Se ha perdidio la conexion a arduino.")
+            for i in range(5):
+                self.estado_boxes[i] = 0 # Todos a Gris
+            self.actualizar_estados_interfaz()
 
     def actualizar_estados(self): #Envía el comando "?\n" a Arduino, permite consultar estados cada 100 ms.
         self.arduino.write(b'?\n')
