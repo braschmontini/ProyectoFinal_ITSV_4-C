@@ -129,10 +129,9 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.actualBox = indice
 
     def separar_num(self, tiempo): #recibe un tiempo, lo separa en seg y min y returna una tupla
-        if "T" in tiempo:
-            box_tiempo = tiempo.split("T") #Separa
-            min_sec = box_tiempo[1].split(":") #Separa
-            return int(min_sec[0]), int(min_sec[1]) #Crea tupla
+        box_tiempo = tiempo.split("T") #Separa
+        min_sec = box_tiempo[1].split(":") #Separa
+        return int(min_sec[0]), int(min_sec[1]) #Crea tupla
     
     def imprimir_tiempo(self): #Toma el tiempo del box actual lo imprime en mm:ss lo muestra en el LCD
         min = str(self.tiempo_boxes[self.actualBox][0])
