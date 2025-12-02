@@ -28,7 +28,7 @@ class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
         super().__init__()
         self.ui = Ui_LoginWindow()# Carga la interfaz gráfica generada por Qt Designer para la ventana de login.
         self.ui.setupUi(self)# Inserta todos los widgets definidos en la interfaz dentro de esta ventana.
-
+        self.showFullScreen() # Muestra la ventana en modo de pantalla completa.
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
@@ -89,7 +89,8 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         super().__init__() #llama al constructor de la clase QMainWindow, para inicializar las funcionalidades básicas de la ventana principal de la app.
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
-
+        self.showFullScreen() # Muestra la ventana en modo de pantalla completa.
+        
         self.tiempo_credito = 10
 
         self.creditos_boxes = []
