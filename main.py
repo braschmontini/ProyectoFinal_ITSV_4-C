@@ -218,6 +218,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                 elif self.tiempo_boxes[box] != (0, 0):
                     self.estado_boxes[box] = 1
 
+                self.actualizar_estados_interfaz()
                  # ----- CONTROL DE VISIBILIDAD Y PERMISOS EN LA INTERFAZ -----
 
                 # Si el tiempo llegó a cero y el estado es "apagado" → habilita botón "Iniciar" y oculta los grupos de opciones.
