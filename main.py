@@ -188,8 +188,6 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
             if self.arduino.in_waiting > 0:  # Verifica si hay datos disponibles para leer desde el puerto serie.
                 self.mensaje = self.arduino.readline().decode().strip()  # Lee una línea completa enviada por Arduino, la decodifica y elimina espacios/saltos extra.
                 box = int(self.mensaje[0]) - 1 # El primer carácter del mensaje indica el número de box (1–5). Se convierte a índice (0–4).
-                if self.estado_boxes[box] == 0:  # Si el estado del box está como "sin conexión" (0), pero llegó un mensaje, lo cambia a estado "activo/encendido" (1).
-                    self.estado_boxes[box] = 1
 
                 if "T" in self.mensaje:  # Si el mensaje contiene "T", significa que trae tiempo del tipo "T02:30".
                     self.tiempo_boxes[box] = self.separar_num(self.mensaje) # Convierte el string "Tmm:ss" en una tupla (mm, ss) y lo guarda
