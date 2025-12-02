@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27 ,16,2);
-int teclado = 0; int credito = 0; int box = 1;
+int credito = 0; int box = 1;
 bool boton1 = 0; bool boton2 = 0; bool boton3 = 0;  
 bool boton4 = 0; bool boton5 = 0;
 bool flag = 0;
@@ -10,8 +10,6 @@ unsigned long currentmillis = 0;
 unsigned long previousmillis = 0;
 int tiempo = 30;
 int cuentaregresiva = 0;
-long lastDebounceTime = 0;  // the last time the output pin was toggled
-long debounceDelay = 150;   // the debounce time; increase if the output flickers
 int lastSeconds = -1;
 
 void setup() {
@@ -20,7 +18,7 @@ void setup() {
   lcd.begin(16,2);
   lcd.init();
 
-  pinMode(2,INPUT); pinMode(3,INPUT); pinMode(4,INPUT);
+  pinMode(3,INPUT); pinMode(4,INPUT);
   pinMode(5,INPUT); pinMode(6,INPUT); pinMode(7,INPUT);
   pinMode(8,OUTPUT); pinMode(9,OUTPUT);pinMode(10,OUTPUT); 
   pinMode(11,OUTPUT);pinMode(12,OUTPUT);pinMode(13,OUTPUT);
@@ -31,7 +29,6 @@ void loop() {
   digitalWrite(10,HIGH);
   digitalWrite(11,HIGH);
   digitalWrite(12,HIGH);
-//---------------------------------------------------------------------------
   if (credito == 0 && Serial.available()) {
     String mensaje = Serial.readStringUntil('\n');
     mensaje.trim();
@@ -49,7 +46,6 @@ void loop() {
       tiempo = cantidad;
     }
   }
-//--------------------------------------------------------
   if (credito != 0 && iniciado == 0){
       iniciado = 1;
       cuentaregresiva = tiempo*credito;
@@ -68,14 +64,6 @@ void loop() {
     }
   while (credito != 0){
     if(digitalRead(3)!=1||digitalRead(4)!=1||digitalRead(5)!=1||digitalRead(6)!=1||digitalRead(7)!=1){
-
-      if (credito == 0 && Serial.available()) {
-        String mensaje = Serial.readStringUntil('\n');
-        mensaje.trim();
-        if (mensaje.length() > 0 && mensaje.charAt(0) == 'C'){
-          
-        }
-      }
       if (flag==1){
           previousmillis = millis();
           flag = 0;
@@ -102,15 +90,6 @@ void loop() {
       }
     }     
     if (boton1==1 || boton2==1 || boton3==1 || boton4==1 || boton5==1){
-      //---------------------------------------------------------------------------
-      if (Serial.available()) {
-        String mensaje = Serial.readStringUntil('\n');
-        mensaje.trim();
-        if (mensaje.length() > 0 && mensaje.charAt(0) == '?') {
-          Serial.println(String(box) + "on");
-        }
-      }
-      //--------------------------------------------------------
       currentmillis = millis();
       if(cuentaregresiva > 0){
         cuentaregresiva = (tiempo*credito) - ((currentmillis-previousmillis)/1000);
@@ -125,7 +104,7 @@ void loop() {
         lcd.print(":");
         lcd.print(seconds < 10 ? "0" : "");
         lcd.print(seconds); 
-        //--------------------------------------------------------------
+
         if (seconds != lastSeconds) {
           Serial.print(String(box) + "T");
           Serial.print(minutes);
@@ -133,8 +112,7 @@ void loop() {
           Serial.println(seconds);
           lastSeconds = seconds;
         }
-        //------------------------------------------------------------------------------------------------
-        //delay(100);       
+      
         if (boton1 == 1)  jabon_prelavado();
         if (boton2 == 1)  jabon_en_lanza();
         if (boton3 == 1)  espuma_en_cepillo();
