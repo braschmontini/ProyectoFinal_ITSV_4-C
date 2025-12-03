@@ -269,8 +269,8 @@
    <slot>creditos()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>803</x>
-     <y>278</y>
+     <x>844</x>
+     <y>313</y>
     </hint>
     <hint type="destinationlabel">
      <x>432</x>
@@ -278,8 +278,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>listBox</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cambio_lista_box()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>247</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>374</x>
+     <y>598</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>creditos()</slot>
+  <slot>cambio_lista_box()</slot>
  </slots>
 </ui>

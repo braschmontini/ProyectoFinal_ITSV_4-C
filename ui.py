@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfazwjmpyp.ui'
+## Form generated from reading UI file 'interfazvqoLtv.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.3
 ##
@@ -187,6 +187,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.pushIniciar.clicked.connect(MainWindow.creditos)
+        self.listBox.currentRowChanged.connect(MainWindow.cambio_lista_box)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi

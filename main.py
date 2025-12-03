@@ -126,7 +126,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.creditos_boxes[self.actualBox] = self.ui.spinCreditos.value()
         self.arduino.write(creditos_cargados.encode())
     
-    def cambio_box_lista(self, indice): #Cambia el box activo al seleccionado en la lista.
+    def cambio_lista_box(self, indice): #Cambia el box activo al seleccionado en la lista.
         self.actualBox = indice
 
     def separar_num(self, tiempo): #recibe un tiempo, lo separa en seg y min y returna una tupla
