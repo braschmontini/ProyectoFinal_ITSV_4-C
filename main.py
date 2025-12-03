@@ -32,6 +32,7 @@ class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
+        self.setWindowTitle("Login - AquaManager")
 
     def recuperacion(self): #Ejecuta y abre la ventana de recuperacion de contraseña
         self.recuperar_window = RecuperarWindow(self.usuario[0], self.usuario[1])
@@ -90,7 +91,7 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
         self.showFullScreen() # Muestra la ventana en modo de pantalla completa.
-        
+        self.setWindowTitle("Panel de control - AquaManager")
         self.tiempo_credito = 10
 
         self.creditos_boxes = []

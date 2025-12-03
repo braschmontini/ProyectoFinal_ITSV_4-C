@@ -14,7 +14,7 @@ class RecuperarWindow(QMainWindow):
         super().__init__() #Inicia la ventana y carga su interfaz.
         self.ui = Ui_RecuperarContrasea()
         self.ui.setupUi(self)
-
+        self.setWindowTitle("Recuperar Usuario")
         self.SENDER_EMAIL = "soporte.aquamanager@gmail.com"
         self.EMAIL_PASSWORD = "dyph ejym szim eznh"
         self.SMTP_SERVER = "smtp.gmail.com"
