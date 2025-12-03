@@ -28,7 +28,7 @@ class LoginWindow(QMainWindow): #Inicia ventana de login y define variables
         super().__init__()
         self.ui = Ui_LoginWindow()# Carga la interfaz gráfica generada por Qt Designer para la ventana de login.
         self.ui.setupUi(self)# Inserta todos los widgets definidos en la interfaz dentro de esta ventana.
-
+        self.showFullScreen() # Muestra la ventana en modo de pantalla completa.
         self.ui.lineEdit.setStyleSheet("color: black; background-color: white;")
         self.ui.lineEdit_2.setStyleSheet("color: black; background-color: white;")
         self.ui.loginButton.setStyleSheet("color: black; background-color: white;")
@@ -89,7 +89,8 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
         super().__init__() #llama al constructor de la clase QMainWindow, para inicializar las funcionalidades básicas de la ventana principal de la app.
         self.ui = Ui_MainWindow() #crea una instancia de Ui_MainWindow class, la cual es la definición de la interfaz del usuario para la ventana principal.
         self.ui.setupUi(self) #llama al método setupUi() de la instancia Ui_MainWindow, para setear los componenetes de la interfaz del usuario dentro de main window.
-
+        self.showFullScreen() # Muestra la ventana en modo de pantalla completa.
+        
         self.tiempo_credito = 10
 
         self.creditos_boxes = []
@@ -209,15 +210,12 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
 
                 #---- Definir estado de cada box ----
 
-                for i in range(5):
-                    if self.tiempo_boxes[i] == (0, 0):
-                        self.estado_boxes[i] = 0
-
                 if "off" in self.mensaje:
                     self.estado_boxes[box] = 2
                 elif self.tiempo_boxes[box] != (0, 0):
                     self.estado_boxes[box] = 1
 
+                self.actualizar_estados_interfaz()
                  # ----- CONTROL DE VISIBILIDAD Y PERMISOS EN LA INTERFAZ -----
 
                 # Si el tiempo llegó a cero y el estado es "apagado" → habilita botón "Iniciar" y oculta los grupos de opciones.
@@ -238,6 +236,9 @@ class MainWindow(QMainWindow):  #Clase MainWindow heredada de QMainWindow, que e
                     self.ui.groupWashOptions.show()
         except:# Si hubo cualquier error leyendo el puerto serie, se informa la posible pérdida de conexión.
             print("Se ha perdidio la conexion a arduino.")
+            for i in range(5):
+                self.estado_boxes[i] = 0 # Todos a Gris
+            self.actualizar_estados_interfaz()
 
     def actualizar_estados(self): #Envía el comando "?\n" a Arduino, permite consultar estados cada 100 ms.
         self.arduino.write(b'?\n')
