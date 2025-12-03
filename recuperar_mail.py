@@ -1,15 +1,17 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.header import Header
-from email.utils import formataddr
+import smtplib #para conectarse a un servidor SMTP (como Gmail) y enviar mails.
+from email.mime.text import MIMEText #para crear correos con contenido de texto.
+from email.header import Header #para codificar correctamente cadenas como el título o el nombre del remitente.
+from email.utils import formataddr # para mostrar el remitente como "Soporte AquaManager <correo@mail.com>".
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox #Importa PySide6 para manejar la interfaz gráfica Qt.
 from PySide6.QtCore import Qt
-from recuperacion import Ui_RecuperarContrasea
+from recuperacion import Ui_RecuperarContrasea #Importa la interfaz visual creada en Qt Designer (Ui_RecuperarContrasea).
+
+
 
 class RecuperarWindow(QMainWindow):
     def __init__(self, usuario, contrasenia):
-        super().__init__()
+        super().__init__() #Inicia la ventana y carga su interfaz.
         self.ui = Ui_RecuperarContrasea()
         self.ui.setupUi(self)
 
@@ -20,8 +22,7 @@ class RecuperarWindow(QMainWindow):
         self.usuario = usuario
         self.contraseña = contrasenia
 
-    def enviar_credenciales_por_email(self, destinatario):
-        """Envía el usuario y contraseña al destinatario. Retorna True si funciona."""
+    def enviar_credenciales_por_email(self, destinatario): #Envía el usuario y contraseña al destinatario. Retorna True si funciona
         asunto = "Credenciales de Acceso - AquaManager"
         cuerpo = f"""
         Hola,
@@ -36,12 +37,12 @@ class RecuperarWindow(QMainWindow):
         El Equipo de Soporte de AquaManager
         """
 
-        msg = MIMEText(cuerpo, 'plain', 'utf-8')
+        msg = MIMEText(cuerpo, 'plain', 'utf-8') # Se arma el cuerpo del mensaje con los datos del usuario.
         msg['Subject'] = Header(asunto, 'utf-8')
         msg['From'] = formataddr((str(Header('AquaManager Soporte', 'utf-8')), self.SENDER_EMAIL))
         msg['To'] = destinatario
     
-        try:
+        try: #Conecta al servidor SMTP de Gmail -> Activa seguridad TLS -> Hace login con correo y App Password -> Envía el correo al destinatario.
             with smtplib.SMTP(self.SMTP_SERVER, self.PORT) as server:
                 server.starttls()
                 server.login(self.SENDER_EMAIL, self.EMAIL_PASSWORD)
@@ -51,10 +52,8 @@ class RecuperarWindow(QMainWindow):
             print(f"Error SMTP al enviar correo: {e}")
             return False
 
-    def mostrar_mensaje(self, titulo, texto, tipo="info"):
-        """
-        Función personalizada para mostrar mensajes con FONDO BLANCO y TEXTO LEGIBLE.
-        """
+    def mostrar_mensaje(self, titulo, texto, tipo="info"): #Función personalizada para mostrar mensajes con FONDO BLANCO y TEXTO LEGIBLE.
+
         msg_box = QMessageBox(self)
         msg_box.setWindowTitle(titulo)
         msg_box.setText(texto)
@@ -65,8 +64,6 @@ class RecuperarWindow(QMainWindow):
             msg_box.setIcon(QMessageBox.Warning)
         else:
             msg_box.setIcon(QMessageBox.Information)
-
-        # --- ESTILO CORREGIDO ---
         # Forzamos fondo blanco en la ventana, y fondo transparente en el texto
         msg_box.setStyleSheet("""
             QMessageBox {
@@ -93,22 +90,22 @@ class RecuperarWindow(QMainWindow):
     def enviarmail(self):
         destinatario = self.ui.lineEdit.text().strip()
         
-        if not destinatario:
+        if not destinatario: #Si esta vacio solicita una direccion 
             self.mostrar_mensaje("Atención", "Por favor, ingresa una dirección de correo válida.", "warning")
             return
         
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.WaitCursor) #Muestra cursor de "cargando" mientras se envía el correo.
         envio_exitoso = self.enviar_credenciales_por_email(destinatario)
         QApplication.restoreOverrideCursor()
 
-        if envio_exitoso:
+        if envio_exitoso: #Si funciona ejecuta una pestaña con este texto:
             self.mostrar_mensaje(
                 "Envío Exitoso", 
                 "El correo con tus credenciales ha sido enviado correctamente.\nRevisa tu bandeja de entrada.", 
                 "info"
             )
             self.close() # Cierra la ventana
-        else:
+        else: #Si no funciona ejecuta una pestaña con este texto:
             self.mostrar_mensaje(
                 "Error de Envío", 
                 "No se pudo enviar el correo. \nVerifica tu conexión a internet o que la dirección sea correcta.", 
